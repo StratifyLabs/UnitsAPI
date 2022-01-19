@@ -196,6 +196,24 @@ public:
   }
 };
 
+class Pi : public BasicUnitAccess<Pi> {
+public:
+  const char *unit() const override { return "radians"; }
+  const char *symbol() const override { return "rad"; }
+
+  constexpr Pi() : BasicUnitAccess<Pi>(UNITS_NATIVE_SUFFIX(3.14159265358979323846)) {}
+};
+
+class TwoPi : public BasicUnitAccess<Pi> {
+public:
+  const char *unit() const override { return "radians"; }
+  const char *symbol() const override { return "rad"; }
+
+  constexpr TwoPi()
+    : BasicUnitAccess<Pi>(
+      UNITS_NATIVE_SUFFIX(3.14159265358979323846) * UNITS_NATIVE_SUFFIX(2.0)) {}
+};
+
 UNITS_DECLARE_BASIC_UNIT(Mass, kilogram, "kg");
 UNITS_DECLARE_BASIC_UNIT(Time, second, "s");
 UNITS_DECLARE_BASIC_UNIT(ElectricCurrent, ampere, "A");

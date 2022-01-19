@@ -56,7 +56,7 @@ struct Acceleration3d
   : public ThreeDimensionalCartesianCoordinate<Acceleration3d, Acceleration> {
 
   // calculate the distance to another point
-  Velocity3d get_change_in_velocity(Time duration) const;
+  Velocity3d get_velocity(Time duration) const;
 };
 
 struct Size3d {

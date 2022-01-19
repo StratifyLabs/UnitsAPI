@@ -26,20 +26,20 @@
   UNITS_DECLARE_BASIC_UNIT(NAME, UNIT, SYMBOL)
 
 #define UNITS_DECLARE_MULTIPLY(RESULT, LHS, RHS)                               \
-  RESULT operator*(LHS lhs, RHS rhs);                                          \
-  RESULT operator*(RHS lhs, LHS rhs);                                          \
-  LHS operator/(RESULT lhs, RHS rhs);                                          \
-  RHS operator/(RESULT lhs, LHS rhs)
+  RESULT operator*(const LHS &lhs, const RHS &rhs);                            \
+  RESULT operator*(const RHS &lhs, const LHS &rhs);                            \
+  LHS operator/(const RESULT &lhs, const RHS &rhs);                            \
+  RHS operator/(const RESULT &lhs, const LHS &rhs)
 
 #define UNITS_DECLARE_MULTIPLY_SAME(RESULT, LHS)                               \
-  RESULT operator*(LHS lhs, LHS rhs);                                          \
-  LHS operator/(RESULT lhs, LHS rhs);
+  RESULT operator*(const LHS &lhs, const LHS &rhs);                            \
+  LHS operator/(const RESULT &lhs, const LHS &rhs)
 
 #define UNITS_DECLARE_DIVIDE(RESULT, LHS, RHS)                                 \
-  RESULT operator/(LHS lhs, RHS rhs);                                          \
-  RHS operator/(LHS lhs, RESULT rhs);                                          \
-  LHS operator*(RESULT lhs, RHS rhs);                                          \
-  LHS operator*(RHS lhs, RESULT rhs)
+  RESULT operator/(const LHS &lhs, const RHS &rhs);                            \
+  RHS operator/(const LHS &lhs, const RESULT &rhs);                            \
+  LHS operator*(const RESULT &lhs, const RHS &rhs);                            \
+  LHS operator*(const RHS &lhs, const RESULT &rhs)
 
 #define UNITS_BASIC_UNIT_DEFINE_LITERAL(NAME, SYMBOL)                          \
   inline NAME operator"" _p##SYMBOL(unsigned long long int value) {            \

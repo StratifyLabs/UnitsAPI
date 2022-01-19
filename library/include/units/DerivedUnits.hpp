@@ -10,7 +10,7 @@
 namespace units {
 
 UNITS_DECLARE_DERIVED_UNIT(Frequency, hertz, "Hz");
-UNITS_DECLARE_DERIVED_UNIT(Area, square meter,"m^2");
+UNITS_DECLARE_DERIVED_UNIT(Area, square meter, "m^2");
 UNITS_DECLARE_DERIVED_UNIT(Volume, cubic meter, "m^3");
 UNITS_DECLARE_DERIVED_UNIT(Velocity, meter per second, "m/s");
 UNITS_DECLARE_DERIVED_UNIT(Acceleration, meter per second squared, "m/s^2");
@@ -32,6 +32,8 @@ UNITS_DECLARE_DERIVED_UNIT(Illuminance, lux, "lx");
 UNITS_DECLARE_DERIVED_UNIT(DynamicViscosity, pascal second, "Pa*s");
 UNITS_DECLARE_DERIVED_UNIT(MomentOfForce, newton meter, "N*m");
 UNITS_DECLARE_DERIVED_UNIT(AngularVelocity, radian per second, "rad/s");
+using AngularFrequency = AngularVelocity;
+
 UNITS_DECLARE_DERIVED_UNIT(
   AngularAcceleration,
   radian per second squared,
@@ -78,8 +80,8 @@ UNITS_DECLARE_MULTIPLY_SAME(Area, Length);
 UNITS_DECLARE_DIVIDE(Frequency, Unitless, Time);
 UNITS_DECLARE_DIVIDE(Velocity, Length, Time);
 UNITS_DECLARE_DIVIDE(Acceleration, Velocity, Time);
-Length operator/(Velocity lhs, Frequency rhs);
-Frequency operator/(Velocity lhs, Length rhs);
+Length operator/(const Velocity &lhs, const Frequency &rhs);
+Frequency operator/(const Velocity &lhs, const Length &rhs);
 UNITS_DECLARE_MULTIPLY(Force, Mass, Acceleration);
 UNITS_DECLARE_DIVIDE(Pressure, Force, Area);
 UNITS_DECLARE_MULTIPLY(Energy, Force, Length);
@@ -96,6 +98,13 @@ UNITS_DECLARE_DIVIDE(Illuminance, LuminousIntensity, Area);
 UNITS_DECLARE_MULTIPLY(DynamicViscosity, Pressure, Time);
 UNITS_DECLARE_MULTIPLY(MomentOfForce, Force, OrthogonalLength);
 UNITS_DECLARE_DIVIDE(AngularVelocity, PlaneAngle, Time);
+AngularFrequency operator*(const TwoPi &lhs, const Frequency &rhs);
+AngularFrequency operator*(const Frequency &lhs, const TwoPi &rhs);
+Frequency operator/(const AngularFrequency &lhs, const TwoPi &rhs);
+AngularFrequency operator/(const TwoPi &lhs, const Time &rhs);
+Time operator/(const TwoPi &lhs, const AngularFrequency &rhs);
+
+
 UNITS_DECLARE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
 UNITS_DECLARE_DIVIDE(SurfaceTension, Force, Length);
 UNITS_DECLARE_DIVIDE(HeatFluxDensity, Power, Area);
@@ -113,8 +122,9 @@ UNITS_DECLARE_DIVIDE(Permittivity, Capacitance, Length);
 UNITS_DECLARE_DIVIDE(Permeability, Inductance, Length);
 UNITS_DECLARE_DIVIDE(MolarEnergy, Energy, AmountOfSubstance);
 // UNITS_DECLARE_DIVIDE(MolarHeatCapacity,Energy,AmountOfSubstance *
-// ThermodynamicTemperature); UNITS_DECLARE_DIVIDE(Radiance,Power,Area *
-// SolidAngle);
+// ThermodynamicTemperature);
+//
+// UNITS_DECLARE_DIVIDE(Radiance,Power,Area * SolidAngle);
 
 UNITS_DECLARE_DERIVED_UNIT(Momentum, kilogram meter per second, "kg*m/s");
 UNITS_DECLARE_MULTIPLY(Momentum, Mass, Velocity);
@@ -122,8 +132,6 @@ UNITS_DECLARE_MULTIPLY(Energy, Momentum, Velocity);
 
 UNITS_DECLARE_DERIVED_UNIT(MassDensity, kilogram per cubic meter, "kg/m^3");
 UNITS_DECLARE_DIVIDE(MassDensity, Mass, Volume);
-
-
 
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Area, m2)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Volume, m3)
@@ -143,14 +151,10 @@ UNITS_BASIC_UNIT_DEFINE_LITERAL(Pressure, Pa)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Velocity, mps)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(AngularVelocity, radps)
 
-
-
 Velocity from_feet_per_second(NativeType input);
 Velocity from_miles_per_hour(NativeType input);
 
 Frequency from_rounds_per_minute(NativeType input);
-
-
 
 } // namespace units
 

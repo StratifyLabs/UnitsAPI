@@ -14,9 +14,20 @@ public:
 
   bool execute_class_api_case() {
 
+
     TEST_ASSERT_RESULT(test_macros());
     TEST_ASSERT_RESULT(test_units());
     TEST_ASSERT_RESULT(test_usage());
+    TEST_ASSERT_RESULT(test_code_generation());
+
+    return true;
+  }
+
+  bool test_code_generation(){
+
+    printer().key("sizeOfNativeType", var::NumberString(sizeof(NativeType)));
+    printer().key("sizeOfFrequency", var::NumberString(sizeof(Frequency)));
+
 
     return true;
   }
