@@ -22,7 +22,7 @@ var::NumberString BasicUnit::to_string(const char *fmt) const {
 }
 
 Length from_feet(NativeType value) {
-  return Length((value * 3048) / 10'000);
+  return Length(value * UNITS_NATIVE_SUFFIX(0.3048));
 }
 
 Length from_miles(NativeType value) {
@@ -30,11 +30,11 @@ Length from_miles(NativeType value) {
 }
 
 Length from_inches(NativeType value) {
-  return Length((value * 254) / 10'000);
+  return Length(value * UNITS_NATIVE_SUFFIX(0.0254));
 }
 
 Length from_mils(NativeType value) {
-  return Length((value * 254) / 10'000'000);
+  return from_inches(value / 1000);
 }
 
 } // namespace units

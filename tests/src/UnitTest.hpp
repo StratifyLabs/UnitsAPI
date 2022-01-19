@@ -36,12 +36,18 @@ public:
     printer().object("adcOutputVoltage", voltage_out);
 
     // calculate a resistance from a voltage
-    auto current = (ElectricPotential(3.3f) - ElectricPotential(1.2f))
-                   / ElectricResistance(10000);
+    auto current = (3300_mV - 1200_mV)
+                   / 10_kohms;
 
-    auto resistance = ElectricPotential(1.2f) / current;
+    auto resistance = 1200_mV / current;
     printer().object("resistance", resistance);
 
+    auto speed = 15_cm / 1_s;
+    printer().object("speed", speed);
+
+    auto angular_velocity = 3140_mrad / 1_s;
+    const auto c = speed_of_light();
+    printer().object("c", c);
 
     return true;
   }

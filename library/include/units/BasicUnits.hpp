@@ -11,11 +11,11 @@
 
 namespace units {
 
-using NativeType = float;
+using NativeType = UNITS_NATIVE_TYPE;
 
 class BasicUnit {
 public:
-  static constexpr NativeType unit_type_multiplier = 1.0f;
+  static constexpr NativeType unit_type_multiplier = UNITS_NATIVE_SUFFIX(1.0);
 
   virtual const char *unit() const = 0;
   virtual const char *symbol() const = 0;
@@ -23,26 +23,26 @@ public:
   constexpr NativeType native_value() const { return m_native_value; }
   constexpr NativeType value() const { return m_native_value; }
 
-  NativeType yotta() const { return m_native_value * 10E24; }
-  NativeType zetta() const { return m_native_value * 10E21; }
-  NativeType exa() const { return m_native_value * 10E18; }
-  NativeType peta() const { return m_native_value * 10E15; }
-  NativeType tera() const { return m_native_value * 10E12; }
-  NativeType giga() const { return m_native_value * 10E9; }
-  NativeType mega() const { return m_native_value * 10E6; }
-  NativeType kilo() const { return m_native_value * 1000; }
-  NativeType hecto() const { return m_native_value * 100; }
-  NativeType deka() const { return m_native_value * 10; }
-  NativeType deci() const { return m_native_value * 1E-1; }
-  NativeType centi() const { return m_native_value * 1E-2; }
-  NativeType milli() const { return m_native_value * 1E-3; }
-  NativeType micro() const { return m_native_value * 1E-6; }
-  NativeType nano() const { return m_native_value * 1E-9; }
-  NativeType pico() const { return m_native_value * 1E-12; }
-  NativeType femto() const { return m_native_value * 1E-15; }
-  NativeType atto() const { return m_native_value * 1E-18; }
-  NativeType zepto() const { return m_native_value * 1E-21; }
-  NativeType yocto() const { return m_native_value * 1E-24; }
+  NativeType yotta() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E24); }
+  NativeType zetta() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E21); }
+  NativeType exa() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E18); }
+  NativeType peta() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E15); }
+  NativeType tera() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E12); }
+  NativeType giga() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E9); }
+  NativeType mega() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E6); }
+  NativeType kilo() const { return m_native_value * UNITS_NATIVE_SUFFIX(1000.0); }
+  NativeType hecto() const { return m_native_value * UNITS_NATIVE_SUFFIX(100.0); }
+  NativeType deka() const { return m_native_value * UNITS_NATIVE_SUFFIX(10.0); }
+  NativeType deci() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-1); }
+  NativeType centi() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-2); }
+  NativeType milli() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-3); }
+  NativeType micro() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-6); }
+  NativeType nano() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-9); }
+  NativeType pico() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-12); }
+  NativeType femto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-15); }
+  NativeType atto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-18); }
+  NativeType zepto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-21); }
+  NativeType yocto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-24); }
 
   var::NumberString to_string(const char *fmt = "%0.3f") const;
 
@@ -132,8 +132,8 @@ public:
   }
 
 protected:
-  BasicUnitAccess() = default;
-  BasicUnitAccess(NativeType value) : BasicUnit(value) {}
+  constexpr BasicUnitAccess() = default;
+  constexpr BasicUnitAccess(NativeType value) : BasicUnit(value) {}
 };
 
 class OrthogonalLength : public BasicUnitAccess<OrthogonalLength> {
@@ -158,15 +158,15 @@ public:
   }
 };
 
-UNITS_DECLARE_BASIC_UNIT(Mass, kilogram, kg);
-UNITS_DECLARE_BASIC_UNIT(Time, second, s);
-UNITS_DECLARE_BASIC_UNIT(ElectricCurrent, ampere, A);
+UNITS_DECLARE_BASIC_UNIT(Mass, kilogram, "kg");
+UNITS_DECLARE_BASIC_UNIT(Time, second, "s");
+UNITS_DECLARE_BASIC_UNIT(ElectricCurrent, ampere, "A");
 
-UNITS_DECLARE_BASIC_UNIT(ThermodynamicTemperature, kelvin, K);
-UNITS_DECLARE_BASIC_UNIT(AmountOfSubstance, mole, mol);
-UNITS_DECLARE_BASIC_UNIT(LuminousIntensity, candela, cd);
-UNITS_DECLARE_BASIC_UNIT(PlaneAngle, radian, rad);
-UNITS_DECLARE_BASIC_UNIT(SolidAngle, steradian, sr);
+UNITS_DECLARE_BASIC_UNIT(ThermodynamicTemperature, kelvin, "K");
+UNITS_DECLARE_BASIC_UNIT(AmountOfSubstance, mole, "mol");
+UNITS_DECLARE_BASIC_UNIT(LuminousIntensity, candela, "cd");
+UNITS_DECLARE_BASIC_UNIT(PlaneAngle, radian, "rad");
+UNITS_DECLARE_BASIC_UNIT(SolidAngle, steradian, "sr");
 
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Unitless, u)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Length, m)
@@ -188,6 +188,11 @@ inline Mass operator"" _kg(unsigned long long int value) {
 
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Time, s)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricCurrent, A)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(PlaneAngle, rad)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(SolidAngle, sr)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(AmountOfSubstance, mol)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(LuminousIntensity, cd)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(ThermodynamicTemperature, K)
 
 } // namespace units
 
