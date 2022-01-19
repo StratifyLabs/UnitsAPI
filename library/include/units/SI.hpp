@@ -7,4 +7,9 @@
 
 #include "DerivedUnits.hpp"
 
+#include "CartesianCoordinates.hpp"
+#include "TaitBryanAngles.hpp"
+
+
+
 #endif // UNITSAPI_UNITS_SI_HPP

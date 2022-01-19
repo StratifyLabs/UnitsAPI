@@ -116,6 +116,15 @@ UNITS_DECLARE_DIVIDE(MolarEnergy, Energy, AmountOfSubstance);
 // ThermodynamicTemperature); UNITS_DECLARE_DIVIDE(Radiance,Power,Area *
 // SolidAngle);
 
+UNITS_DECLARE_DERIVED_UNIT(Momentum, kilogram meter per second, "kg*m/s");
+UNITS_DECLARE_MULTIPLY(Momentum, Mass, Velocity);
+UNITS_DECLARE_MULTIPLY(Energy, Momentum, Velocity);
+
+UNITS_DECLARE_DERIVED_UNIT(MassDensity, kilogram per cubic meter, "kg/m^3");
+UNITS_DECLARE_DIVIDE(MassDensity, Mass, Volume);
+
+
+
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Area, m2)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Volume, m3)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Frequency, Hz)
@@ -134,28 +143,14 @@ UNITS_BASIC_UNIT_DEFINE_LITERAL(Pressure, Pa)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Velocity, mps)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(AngularVelocity, radps)
 
+
+
 Velocity from_feet_per_second(NativeType input);
 Velocity from_miles_per_hour(NativeType input);
 
-static inline constexpr Velocity speed_of_light() {
-  return Velocity(UNITS_NATIVE_SUFFIX(299'792'458.0));
-}
+Frequency from_rounds_per_minute(NativeType input);
 
-static inline constexpr ElectricCharge elementary_charge() {
-  return ElectricCharge(UNITS_NATIVE_SUFFIX(1.602176634) * UNITS_NATIVE_SUFFIX(10E-19));
-}
 
-static inline constexpr Acceleration gravity() {
-  return Acceleration(UNITS_NATIVE_SUFFIX(9.81));
-}
-
-static inline constexpr Mass atomic_mass_unit() {
-  return Mass(UNITS_NATIVE_SUFFIX(1.660'540) * UNITS_NATIVE_SUFFIX(10E-27));
-}
-
-static inline constexpr Pressure atmospheric_pressure() {
-  return Pressure(UNITS_NATIVE_SUFFIX(1.01325) * UNITS_NATIVE_SUFFIX(10E5));
-}
 
 } // namespace units
 

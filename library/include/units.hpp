@@ -7,6 +7,7 @@ namespace units {
 }
 
 #include "units/DerivedUnits.hpp"
+#include "units/Physics.hpp"
 
 using namespace units;
 

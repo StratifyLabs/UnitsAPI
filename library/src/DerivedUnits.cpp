@@ -65,6 +65,10 @@ DEFINE_MULTIPLY(MomentOfForce, Force, OrthogonalLength);
 DEFINE_DIVIDE(AngularVelocity, PlaneAngle, Time);
 DEFINE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
 
+DEFINE_MULTIPLY(Momentum, Mass, Velocity);
+DEFINE_DIVIDE(MassDensity, Mass, Volume);
+
+
 Length operator / (Velocity lhs, Frequency rhs){
   return Length(lhs.native_value() * rhs.native_value());
 }
@@ -81,6 +85,9 @@ Velocity from_miles_per_hour(NativeType input){
   return from_miles(input) / 3600_s;
 }
 
+Frequency from_rounds_per_minute(NativeType input){
+  return Frequency(input / UNITS_NATIVE_SUFFIX(60.0));
+}
 
 
 } // namespace units
