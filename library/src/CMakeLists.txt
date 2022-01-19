@@ -1,6 +1,7 @@
 
 
 set(SOURCES
-	LibraryClass.cpp
+	BasicUnits.cpp
+	DerivedUnits.cpp
 	PARENT_SCOPE
 	)

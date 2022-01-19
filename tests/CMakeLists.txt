@@ -1,8 +1,8 @@
 
 # Test dependencies
-set(DEPENDENCIES JsonAPI TestAPI FsAPI)
+set(DEPENDENCIES UnitsAPI TestAPI FsAPI)
 
-api_add_test_executable(LibraryAPI 32768 "${DEPENDENCIES}")
+api_add_test_executable(UnitsAPI 32768 "${DEPENDENCIES}")
 
 
 
