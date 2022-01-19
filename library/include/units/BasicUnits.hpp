@@ -23,26 +23,54 @@ public:
   constexpr NativeType native_value() const { return m_native_value; }
   constexpr NativeType value() const { return m_native_value; }
 
-  NativeType yotta() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E24); }
-  NativeType zetta() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E21); }
+  NativeType yotta() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(10E24);
+  }
+  NativeType zetta() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(10E21);
+  }
   NativeType exa() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E18); }
-  NativeType peta() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E15); }
-  NativeType tera() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E12); }
+  NativeType peta() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(10E15);
+  }
+  NativeType tera() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(10E12);
+  }
   NativeType giga() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E9); }
   NativeType mega() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E6); }
-  NativeType kilo() const { return m_native_value * UNITS_NATIVE_SUFFIX(1000.0); }
-  NativeType hecto() const { return m_native_value * UNITS_NATIVE_SUFFIX(100.0); }
+  NativeType kilo() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1000.0);
+  }
+  NativeType hecto() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(100.0);
+  }
   NativeType deka() const { return m_native_value * UNITS_NATIVE_SUFFIX(10.0); }
   NativeType deci() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-1); }
-  NativeType centi() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-2); }
-  NativeType milli() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-3); }
-  NativeType micro() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-6); }
+  NativeType centi() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-2);
+  }
+  NativeType milli() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-3);
+  }
+  NativeType micro() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-6);
+  }
   NativeType nano() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-9); }
-  NativeType pico() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-12); }
-  NativeType femto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-15); }
-  NativeType atto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-18); }
-  NativeType zepto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-21); }
-  NativeType yocto() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-24); }
+  NativeType pico() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-12);
+  }
+  NativeType femto() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-15);
+  }
+  NativeType atto() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-18);
+  }
+  NativeType zepto() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-21);
+  }
+  NativeType yocto() const {
+    return m_native_value * UNITS_NATIVE_SUFFIX(1E-24);
+  }
 
   var::NumberString to_string(const char *fmt = "%0.3f") const;
 
@@ -123,7 +151,17 @@ public:
     return m_native_value / a.native_value();
   }
 
-  Unitless operator/(Derived a) {
+  Derived operator*=(Unitless a) const {
+    m_native_value *= a.native_value();
+    return static_cast<Derived &>(*this);
+  }
+
+  Derived operator/=(Unitless a) const {
+    m_native_value /= a.native_value();
+    return static_cast<Derived &>(*this);
+  }
+
+  Unitless operator/(Derived a) const {
     return Unitless(m_native_value / a.m_native_value);
   }
 
@@ -168,7 +206,7 @@ UNITS_DECLARE_BASIC_UNIT(LuminousIntensity, candela, "cd");
 UNITS_DECLARE_BASIC_UNIT(PlaneAngle, radian, "rad");
 UNITS_DECLARE_BASIC_UNIT(SolidAngle, steradian, "sr");
 
-UNITS_BASIC_UNIT_DEFINE_LITERAL(Unitless, u)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(Unitless, number)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Length, m)
 
 Length from_mils(NativeType input);

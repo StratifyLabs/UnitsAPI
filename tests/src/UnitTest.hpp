@@ -24,9 +24,9 @@ public:
   bool test_usage() {
 
     // convert ADC to a real value
-    const auto adc_input = Unitless(24);
+    const auto adc_input = 50_number; //unitless value
     const auto adc_max = Unitless(1024);
-    const auto voltage_in = 3300_mV * adc_input / adc_max;
+    const auto voltage_in = 3300_mV * (adc_input / adc_max);
     printer().object("adcInputVoltage", voltage_in);
 
     // convert voltage to a height using a ratio
@@ -42,10 +42,12 @@ public:
     auto resistance = 1200_mV / current;
     printer().object("resistance", resistance);
 
-    auto speed = 15_cm / 1_s;
+    auto speed = from_feet(12) / 1_s;
     printer().object("speed", speed);
 
     auto angular_velocity = 3140_mrad / 1_s;
+    printer().object("angular_velocity", angular_velocity);
+
     const auto c = speed_of_light();
     printer().object("c", c);
 
