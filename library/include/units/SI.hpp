@@ -2,7 +2,9 @@
 // Created by Tyler Gilbert on 1/18/22.
 //
 
-#ifndef RUSHROBOTS_SI_HPP
-#define RUSHROBOTS_SI_HPP
+#ifndef UNITSAPI_UNITS_SI_HPP
+#define UNITSAPI_UNITS_SI_HPP
 
-#endif //RUSHROBOTS_SI_HPP
+#include "DerivedUnits.hpp"
+
+#endif // UNITSAPI_UNITS_SI_HPP

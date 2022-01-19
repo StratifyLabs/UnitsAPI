@@ -77,6 +77,7 @@ UNITS_DECLARE_MULTIPLY(Volume, Area, Length);
 UNITS_DECLARE_MULTIPLY_SAME(Area, Length);
 UNITS_DECLARE_DIVIDE(Frequency, Unitless, Time);
 UNITS_DECLARE_DIVIDE(Velocity, Length, Time);
+UNITS_DECLARE_DIVIDE(Acceleration, Velocity, Time);
 Length operator/(Velocity lhs, Frequency rhs);
 Frequency operator/(Velocity lhs, Length rhs);
 UNITS_DECLARE_MULTIPLY(Force, Mass, Acceleration);

@@ -46,6 +46,7 @@ DEFINE_MULTIPLY(Volume, Area, Length);
 DEFINE_MULTIPLY_SAME(Area, Length);
 DEFINE_DIVIDE(Frequency, Unitless, Time);
 DEFINE_DIVIDE(Velocity, Length, Time);
+DEFINE_DIVIDE(Acceleration, Velocity, Time);
 DEFINE_MULTIPLY(Force, Mass, Acceleration);
 DEFINE_DIVIDE(Pressure, Force, Area);
 DEFINE_MULTIPLY(Energy, Force, Length);

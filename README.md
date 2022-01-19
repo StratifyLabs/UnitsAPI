@@ -1,13 +1,32 @@
-# LibraryAPI
+# UnitsAPI
 
-This is a template for creating a new API style library. Don't bother trying to build it. It wont' build. To use it, you need to create a new project using this project as the template. You then change `LibraryAPI` to the name of your API library within the cmake and source files as needed. You can add API-style dependencies or an external project depependency. For examples on how those work, please see these repos:
+UnitsAPI is a library to using SI units in modern C++ programs.
 
-- [JsonAPI](https://github.com/StratifyLabs/JsonAPI): builds [jansson JSON library](https://github.com/akheron/jansson) as a sub-project
-- [InetAPI](https://github.com/StratifyLabs/InetAPI): builds [mbedtls](https://github.com/ARMmbed/mbedtls) and [lwip](https://github.com/StratifyLabs/StratifyOS-lwip) as subprojects
-- [WindowAPI](https://github.com/StratifyLabs/WindowAPI): builds [libsdl](https://github.com/libsdl-org) as an external project dependency
+Here are a few examples:
 
-This project is designed to be pulled and built as part of a super project such as:
+```cpp
+#include <units/SI.hpp>
 
-- [cli](https://github.com/StratifyLabs/cli)
-- [gui](https://github.com/StratifyLabs/gui)
-- [STM32H735G-DK](https://github.com/StratifyLabs/STM32H735G-DK)
+using namespace units;
+//convert ADC value to a voltage
+const auto adc_input = Unitless(adc().read());
+const auto adc_max = Unitless(4095); //12-bit value
+const auto voltage_input = 3300_mV * (adc_input / adc_max);
+
+//now convert the voltage through a voltage divider
+const auto voltage_output = voltage_input * ((10_kohms + 20_kohms) / (10_kohms));
+
+//now use a user defined ratio to convert the voltage
+//to temperature assuming the voltage is connected to a temperature sensor
+const auto temperature = voltage_output.convert<Temperature>(0.010f); //0.010 V per degree Celcius
+```
+
+```cpp
+
+//calculate speed from distance and time
+const auto velocity = 10_cm / 523_ms;
+
+//wavelength calculations
+const auto wavelength = speed_of_light() * 323_ns;
+
+```

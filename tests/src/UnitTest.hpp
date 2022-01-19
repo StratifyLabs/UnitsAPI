@@ -51,6 +51,18 @@ public:
     const auto c = speed_of_light();
     printer().object("c", c);
 
+    //dead reckoning calculations
+    const auto step = 0.001;
+    auto position = Length(0);
+    auto velocity = Velocity(0);
+    for(auto time: api::Index(50)){
+      velocity += (gravity() * (1_s * Unitless(step)));
+      velocity += (gravity() * (Unitless(step) * 1_s));
+      velocity += (gravity() * 50_ms);
+      position += velocity * 50_ms;
+    }
+
+
     return true;
   }
 
