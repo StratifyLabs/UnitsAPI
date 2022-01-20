@@ -6,38 +6,38 @@
 
 #define DEFINE_MULTIPLY(RESULT, LHS, RHS)                                      \
   RESULT operator*(const LHS &lhs, const RHS &rhs) {                           \
-    return RESULT(lhs.native_value() * rhs.native_value());                    \
+    return RESULT(lhs.value() * rhs.value());                    \
   }                                                                            \
   RESULT operator*(const RHS &lhs, const LHS &rhs) {                           \
-    return RESULT(lhs.native_value() * rhs.native_value());                    \
+    return RESULT(lhs.value() * rhs.value());                    \
   }                                                                            \
   LHS operator/(const RESULT &lhs, const RHS &rhs) {                           \
-    return LHS(lhs.native_value() / rhs.native_value());                       \
+    return LHS(lhs.value() / rhs.value());                       \
   }                                                                            \
   RHS operator/(const RESULT &lhs, const LHS &rhs) {                           \
-    return RHS(lhs.native_value() / rhs.native_value());                       \
+    return RHS(lhs.value() / rhs.value());                       \
   }
 
 #define DEFINE_MULTIPLY_SAME(RESULT, LHS)                                      \
   RESULT operator*(const LHS &lhs, const LHS &rhs) {                           \
-    return RESULT(lhs.native_value() * rhs.native_value());                    \
+    return RESULT(lhs.value() * rhs.value());                    \
   }                                                                            \
   LHS operator/(const RESULT &lhs, const LHS &rhs) {                           \
-    return LHS(lhs.native_value() / rhs.native_value());                       \
+    return LHS(lhs.value() / rhs.value());                       \
   }
 
 #define DEFINE_DIVIDE(RESULT, LHS, RHS)                                        \
   RESULT operator/(const LHS &lhs, const RHS &rhs) {                           \
-    return RESULT(lhs.native_value() / rhs.native_value());                    \
+    return RESULT(lhs.value() / rhs.value());                    \
   }                                                                            \
   RHS operator/(const LHS &lhs, const RESULT &rhs) {                           \
-    return RHS(lhs.native_value() / rhs.native_value());                       \
+    return RHS(lhs.value() / rhs.value());                       \
   }                                                                            \
   LHS operator*(const RESULT &lhs, const RHS &rhs) {                           \
-    return LHS(lhs.native_value() * rhs.native_value());                       \
+    return LHS(lhs.value() * rhs.value());                       \
   }                                                                            \
   LHS operator*(const RHS &lhs, const RESULT &rhs) {                           \
-    return LHS(lhs.native_value() * rhs.native_value());                       \
+    return LHS(lhs.value() * rhs.value());                       \
   }
 
 namespace units {
@@ -65,23 +65,23 @@ DEFINE_MULTIPLY(MomentOfForce, Force, OrthogonalLength);
 DEFINE_DIVIDE(AngularVelocity, PlaneAngle, Time);
 
 AngularFrequency operator*(const TwoPi &lhs, const Frequency &rhs) {
-  return AngularFrequency(lhs.native_value() * rhs.native_value());
+  return AngularFrequency(lhs.value() * rhs.value());
 }
 
 AngularFrequency operator*(const Frequency &lhs, const TwoPi &rhs) {
-  return AngularFrequency(lhs.native_value() * rhs.native_value());
+  return AngularFrequency(lhs.value() * rhs.value());
 }
 
 Frequency operator/(const AngularFrequency &lhs, const TwoPi &rhs) {
-  return Frequency(lhs.native_value() / rhs.native_value());
+  return Frequency(lhs.value() / rhs.value());
 }
 
 AngularFrequency operator/(const TwoPi &lhs, const Time &rhs){
-  return AngularFrequency(lhs.native_value() / rhs.native_value());
+  return AngularFrequency(lhs.value() / rhs.value());
 }
 
 Time operator/(const TwoPi &lhs, const AngularFrequency &rhs){
-  return Time(lhs.native_value() / rhs.native_value());
+  return Time(lhs.value() / rhs.value());
 }
 
 DEFINE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
@@ -90,11 +90,11 @@ DEFINE_MULTIPLY(Momentum, Mass, Velocity);
 DEFINE_DIVIDE(MassDensity, Mass, Volume);
 
 Length operator/(const Velocity &lhs, const Frequency & rhs) {
-  return Length(lhs.native_value() * rhs.native_value());
+  return Length(lhs.value() * rhs.value());
 }
 
 Frequency operator/(const Velocity & lhs, const Length & rhs) {
-  return Frequency(lhs.native_value() * rhs.native_value());
+  return Frequency(lhs.value() * rhs.value());
 }
 
 Velocity from_feet_per_second(NativeType input) {

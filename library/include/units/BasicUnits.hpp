@@ -17,7 +17,6 @@ class BasicUnit {
 public:
   static constexpr NativeType unit_type_multiplier = UNITS_NATIVE_SUFFIX(1.0);
 
-  constexpr NativeType native_value() const { return m_native_value; }
   constexpr NativeType value() const { return m_native_value; }
 
   NativeType yotta() const {
@@ -75,6 +74,10 @@ public:
   static const char *get_symbol(const BasicUnit &a);
 
 protected:
+  //Normally enum class values would be snake-case
+  //but to have compatiblity with the classes
+  //and aid the use of macros, these names
+  //match the class names
   enum class Type : u32 {
     Unitless,
     Mass,
@@ -138,7 +141,7 @@ protected:
     : m_native_value(value), m_type(type) {}
 
   NativeType m_native_value{};
-  Type m_type = Type::Unitless;
+  const Type m_type = Type::Unitless;
 };
 
 class Unitless : public BasicUnit {
@@ -187,38 +190,38 @@ private:
 template <class Derived> class BasicUnitAccess : public BasicUnit {
 public:
   Derived operator+(const Derived &a) const {
-    return Derived(native_value() + a.native_value());
+    return Derived(value() + a.value());
   }
 
   Derived &operator+=(const Derived &a) {
-    m_native_value += a.native_value();
+    m_native_value += a.value();
     return static_cast<Derived &>(*this);
   }
 
   Derived operator-(const Derived &a) const {
-    return Derived(native_value() - a.native_value());
+    return Derived(value() - a.value());
   }
 
   Derived &operator-=(const Derived &a) {
-    m_native_value -= a.native_value();
+    m_native_value -= a.value();
     return static_cast<Derived &>(*this);
   }
 
   Derived operator*(Unitless a) const {
-    return m_native_value * a.native_value();
+    return m_native_value * a.value();
   }
 
   Derived operator/(Unitless a) const {
-    return m_native_value / a.native_value();
+    return m_native_value / a.value();
   }
 
   Derived operator*=(Unitless a) const {
-    m_native_value *= a.native_value();
+    m_native_value *= a.value();
     return static_cast<Derived &>(*this);
   }
 
   Derived operator/=(Unitless a) const {
-    m_native_value /= a.native_value();
+    m_native_value /= a.value();
     return static_cast<Derived &>(*this);
   }
 
@@ -257,7 +260,7 @@ public:
   UNITS_BASIC_CONSTRUCT(Length);
 
   OrthogonalLength get_orthogonal_length() const {
-    return OrthogonalLength(native_value());
+    return OrthogonalLength(value());
   }
 };
 

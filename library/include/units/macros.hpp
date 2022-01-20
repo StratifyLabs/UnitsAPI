@@ -20,7 +20,7 @@
     UNITS_BASIC_CONSTRUCT(NAME);                                               \
   };                                                                           \
   inline NAME operator*(Unitless lhs, NAME rhs) {                              \
-    return NAME(lhs.native_value() * rhs.native_value());                      \
+    return NAME(lhs.value() * rhs.value());                      \
   }
 
 #define UNITS_DECLARE_DERIVED_UNIT(NAME, UNIT, SYMBOL)                         \
