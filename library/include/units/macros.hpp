@@ -8,14 +8,15 @@
 #include <sdk/types.h>
 
 #define UNITS_BASIC_CONSTRUCT(NAME)                                            \
-  constexpr NAME(NativeType value) : BasicUnitAccess<NAME>(value) {}           \
+  constexpr NAME(NativeType value)                                             \
+    : BasicUnitAccess<NAME>(value, Type::NAME) {}                              \
   constexpr NAME() = default
 
 #define UNITS_DECLARE_BASIC_UNIT(NAME, UNIT, SYMBOL)                           \
   class NAME : public BasicUnitAccess<NAME> {                                  \
   public:                                                                      \
-    const char *unit() const override { return MCU_STRINGIFY(UNIT); }          \
-    const char *symbol() const override { return SYMBOL; }                     \
+    static constexpr const char *unit() { return MCU_STRINGIFY(UNIT); }        \
+    static constexpr const char *symbol() { return SYMBOL; }                   \
     UNITS_BASIC_CONSTRUCT(NAME);                                               \
   };                                                                           \
   inline NAME operator*(Unitless lhs, NAME rhs) {                              \
@@ -70,12 +71,12 @@
     return NAME(value * BasicUnit::unit_type_multiplier * 1'000'000'000);      \
   }
 
-#if !defined __link
-#define UNITS_NATIVE_SUFFIX(x) (x##f)
-#define UNITS_NATIVE_TYPE float
-#else
+#if UNITS_API_IS_DOUBLE
 #define UNITS_NATIVE_SUFFIX(x) (x)
 #define UNITS_NATIVE_TYPE double
+#else
+#define UNITS_NATIVE_SUFFIX(x) (x##f)
+#define UNITS_NATIVE_TYPE float
 #endif
 
 #endif // UNITSAPI_UNITS_MACROS_HPP

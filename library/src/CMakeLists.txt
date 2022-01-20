@@ -2,8 +2,9 @@
 
 set(SOURCES
 	BasicUnits.cpp
-	Cartesian.cpp
+	CartesianCoordinates.cpp
 	DerivedUnits.cpp
 	Physics.cpp
+	TaitBryanAngles.cpp
 	PARENT_SCOPE
 	)

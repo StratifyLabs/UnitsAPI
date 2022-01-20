@@ -17,9 +17,6 @@ class BasicUnit {
 public:
   static constexpr NativeType unit_type_multiplier = UNITS_NATIVE_SUFFIX(1.0);
 
-  virtual const char *unit() const = 0;
-  virtual const char *symbol() const = 0;
-
   constexpr NativeType native_value() const { return m_native_value; }
   constexpr NativeType value() const { return m_native_value; }
 
@@ -74,16 +71,80 @@ public:
 
   var::NumberString to_string(const char *fmt = "%0.3f") const;
 
+  static const char *get_unit(const BasicUnit &a);
+  static const char *get_symbol(const BasicUnit &a);
+
 protected:
+  enum class Type : u32 {
+    Unitless,
+    Mass,
+    Time,
+    ElectricCurrent,
+    ThermodynamicTemperature,
+    AmountOfSubstance,
+    LuminousIntensity,
+    PlaneAngle,
+    SolidAngle,
+    Length,
+    OrthogonalLength,
+    Pi,
+    TwoPi,
+    Frequency,
+    Area,
+    Volume,
+    Velocity,
+    Acceleration,
+    Force,
+    Pressure,
+    Energy,
+    Power,
+    ElectricCharge,
+    ElectricPotential,
+    Capacitance,
+    ElectricResistance,
+    ElectricConductance,
+    MagneticFlux,
+    MagneticFluxDensity,
+    Inductance,
+    Temperature,
+    LuminousFlux,
+    Illuminance,
+    DynamicViscosity,
+    MomentOfForce,
+    AngularVelocity,
+    AngularAcceleration,
+    SurfaceTension,
+    HeatFluxDensity,
+    HeatCapacity,
+    SpecificHeatCapacity,
+    SpecificEnergy,
+    ThermalConductivity,
+    EnergyDensity,
+    ElectricFieldStrength,
+    ElectricChargeDensity,
+    ElectricFluxDensity,
+    Permittivity,
+    Permeability,
+    MolarEnergy,
+    MolarHeatCapacity,
+    Radiance,
+    Momentum,
+    MassDensity
+  };
+
   constexpr BasicUnit() = default;
   constexpr BasicUnit(NativeType value) : m_native_value(value) {}
+  constexpr BasicUnit(NativeType value, Type type)
+    : m_native_value(value), m_type(type) {}
+
   NativeType m_native_value{};
+  Type m_type = Type::Unitless;
 };
 
 class Unitless : public BasicUnit {
 public:
-  const char *unit() const override { return "unitless"; }
-  const char *symbol() const override { return ""; }
+  static constexpr const char *unit() { return "unitless"; }
+  static constexpr const char *symbol() { return ""; }
 
   constexpr Unitless() = default;
   constexpr Unitless(NativeType value) : BasicUnit(value) {}
@@ -170,14 +231,18 @@ public:
   }
 
 protected:
+  friend class BasicUnit;
   constexpr BasicUnitAccess() = default;
-  constexpr BasicUnitAccess(NativeType value) : BasicUnit(value) {}
+  constexpr BasicUnitAccess(NativeType value, Type type) : BasicUnit(value, type) {}
+
+  constexpr static void magic_function() {}
+  constexpr static void *magic_number() { return (void *)magic_function; }
 };
 
 class OrthogonalLength : public BasicUnitAccess<OrthogonalLength> {
 public:
-  const char *unit() const override { return "meter"; }
-  const char *symbol() const override { return "m"; }
+  static constexpr const char *unit() { return "meter"; }
+  static constexpr const char *symbol() { return "m"; }
 
   UNITS_BASIC_CONSTRUCT(OrthogonalLength);
 
@@ -186,8 +251,8 @@ private:
 
 class Length : public BasicUnitAccess<Length> {
 public:
-  const char *unit() const override { return "meter"; }
-  const char *symbol() const override { return "m"; }
+  static constexpr const char *unit() { return "meter"; }
+  static constexpr const char *symbol() { return "m"; }
 
   UNITS_BASIC_CONSTRUCT(Length);
 
@@ -198,20 +263,21 @@ public:
 
 class Pi : public BasicUnitAccess<Pi> {
 public:
-  const char *unit() const override { return "radians"; }
-  const char *symbol() const override { return "rad"; }
+  static constexpr const char *unit() { return "radians"; }
+  static constexpr const char *symbol() { return "rad"; }
 
-  constexpr Pi() : BasicUnitAccess<Pi>(UNITS_NATIVE_SUFFIX(3.14159265358979323846)) {}
+  constexpr Pi()
+    : BasicUnitAccess<Pi>(UNITS_NATIVE_SUFFIX(3.14159265358979323846), Type::Pi) {}
 };
 
-class TwoPi : public BasicUnitAccess<Pi> {
+class TwoPi : public BasicUnitAccess<TwoPi> {
 public:
-  const char *unit() const override { return "radians"; }
-  const char *symbol() const override { return "rad"; }
+  static constexpr const char *unit() { return "radians"; }
+  static constexpr const char *symbol() { return "rad"; }
 
   constexpr TwoPi()
-    : BasicUnitAccess<Pi>(
-      UNITS_NATIVE_SUFFIX(3.14159265358979323846) * UNITS_NATIVE_SUFFIX(2.0)) {}
+    : BasicUnitAccess<TwoPi>(
+      UNITS_NATIVE_SUFFIX(3.14159265358979323846) * UNITS_NATIVE_SUFFIX(2.0), Type::TwoPi) {}
 };
 
 UNITS_DECLARE_BASIC_UNIT(Mass, kilogram, "kg");

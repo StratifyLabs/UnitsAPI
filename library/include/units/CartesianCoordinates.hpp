@@ -5,11 +5,12 @@
 #ifndef UNITSAPI_UNITS_CARTESIAN_COORDINATES_HPP
 #define UNITSAPI_UNITS_CARTESIAN_COORDINATES_HPP
 
-#include "DerivedUnits.hpp"
+#include "TaitBryanAngles.hpp"
 
 namespace units {
 
 template <class Derived, class Type> class ThreeDimensionalCartesianCoordinate {
+public:
   Type x;
   Type y;
   Type z;
@@ -44,7 +45,7 @@ struct Point3d : public ThreeDimensionalCartesianCoordinate<Point3d, Length> {
   Length get_distance(const Point3d &a) const;
 };
 
-using Position3d = Point3d;
+using SpatialPosition3d = Point3d;
 
 struct Velocity3d : public ThreeDimensionalCartesianCoordinate<Velocity3d, Velocity> {
 
@@ -67,6 +68,32 @@ struct Size3d {
   Volume get_volume() const;
 };
 
+struct Position6d {
+  SpatialPosition3d spatial;
+  AngularPosition3d angular;
+};
+
+struct Velocity6d {
+  Velocity3d spatial;
+  AngularVelocity3d angular;
+};
+
+struct Acceleration6d {
+  Acceleration3d spatial;
+  AngularAcceleration3d angular;
+};
+
 } // namespace units
+
+namespace printer {
+class Printer;
+Printer &operator<<(Printer &printer, const units::Point3d &a);
+Printer &operator<<(Printer &printer, const units::Velocity3d &a);
+Printer &operator<<(Printer &printer, const units::Acceleration3d &a);
+Printer &operator<<(Printer &printer, const units::Size3d &a);
+Printer &operator<<(Printer &printer, const units::Position6d &a);
+Printer &operator<<(Printer &printer, const units::Velocity6d &a);
+Printer &operator<<(Printer &printer, const units::Acceleration6d &a);
+} // namespace printer
 
 #endif // UNITSAPI_UNITS_CARTESIAN_COORDINATES_HPP

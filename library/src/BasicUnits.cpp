@@ -4,13 +4,13 @@
 
 #include <printer/Printer.hpp>
 
-#include "units/BasicUnits.hpp"
+#include "units/DerivedUnits.hpp"
 
 namespace printer {
 class Printer;
 Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
-  return printer.key("unit", basic_unit.unit())
-    .key("symbol", basic_unit.symbol())
+  return printer.key("unit", units::BasicUnit::get_unit(basic_unit))
+    .key("symbol", units::BasicUnit::get_symbol(basic_unit))
     .key("value", var::NumberString(basic_unit.value()));
 }
 } // namespace printer
@@ -18,23 +18,145 @@ Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
 namespace units {
 
 var::NumberString BasicUnit::to_string(const char *fmt) const {
-  return var::NumberString(value(), fmt).append(symbol());
+  return var::NumberString(value(), fmt).append(get_symbol(*this));
 }
 
 Length from_feet(NativeType value) {
   return Length(value * UNITS_NATIVE_SUFFIX(0.3048));
 }
 
-Length from_miles(NativeType value) {
-  return from_feet(value * 5280);
-}
+Length from_miles(NativeType value) { return from_feet(value * 5280); }
 
 Length from_inches(NativeType value) {
   return Length(value * UNITS_NATIVE_SUFFIX(0.0254));
 }
 
-Length from_mils(NativeType value) {
-  return from_inches(value / 1000);
+Length from_mils(NativeType value) { return from_inches(value / 1000); }
+
+#define HANDLE_CASE(NAME, FUNCTION)                                            \
+  case Type::NAME:                                                             \
+    return NAME::FUNCTION()
+
+const char *BasicUnit::get_unit(const BasicUnit &a) {
+  switch (a.m_type) {
+    HANDLE_CASE(Unitless, unit);
+    HANDLE_CASE(Time, unit);
+    HANDLE_CASE(ElectricCurrent, unit);
+    HANDLE_CASE(ThermodynamicTemperature, unit);
+    HANDLE_CASE(AmountOfSubstance, unit);
+    HANDLE_CASE(Mass, unit);
+    HANDLE_CASE(LuminousIntensity, unit);
+    HANDLE_CASE(PlaneAngle, unit);
+    HANDLE_CASE(SolidAngle, unit);
+    HANDLE_CASE(Length, unit);
+    HANDLE_CASE(OrthogonalLength, unit);
+    HANDLE_CASE(Pi, unit);
+    HANDLE_CASE(TwoPi, unit);
+    HANDLE_CASE(Frequency, unit);
+    HANDLE_CASE(Area, unit);
+    HANDLE_CASE(Volume, unit);
+    HANDLE_CASE(Velocity, unit);
+    HANDLE_CASE(Acceleration, unit);
+    HANDLE_CASE(Force, unit);
+    HANDLE_CASE(Pressure, unit);
+    HANDLE_CASE(Energy, unit);
+    HANDLE_CASE(Power, unit);
+    HANDLE_CASE(ElectricCharge, unit);
+    HANDLE_CASE(ElectricPotential, unit);
+    HANDLE_CASE(Capacitance, unit);
+    HANDLE_CASE(ElectricResistance, unit);
+    HANDLE_CASE(ElectricConductance, unit);
+    HANDLE_CASE(MagneticFlux, unit);
+    HANDLE_CASE(MagneticFluxDensity, unit);
+    HANDLE_CASE(Inductance, unit);
+    HANDLE_CASE(Temperature, unit);
+    HANDLE_CASE(LuminousFlux, unit);
+    HANDLE_CASE(Illuminance, unit);
+    HANDLE_CASE(DynamicViscosity, unit);
+    HANDLE_CASE(MomentOfForce, unit);
+    HANDLE_CASE(AngularVelocity, unit);
+    HANDLE_CASE(AngularAcceleration, unit);
+    HANDLE_CASE(SurfaceTension, unit);
+    HANDLE_CASE(HeatFluxDensity, unit);
+    HANDLE_CASE(HeatCapacity, unit);
+    HANDLE_CASE(SpecificHeatCapacity, unit);
+    HANDLE_CASE(SpecificEnergy, unit);
+    HANDLE_CASE(ThermalConductivity, unit);
+    HANDLE_CASE(EnergyDensity, unit);
+    HANDLE_CASE(ElectricFieldStrength, unit);
+    HANDLE_CASE(ElectricChargeDensity, unit);
+    HANDLE_CASE(ElectricFluxDensity, unit);
+    HANDLE_CASE(Permittivity, unit);
+    HANDLE_CASE(Permeability, unit);
+    HANDLE_CASE(MolarEnergy, unit);
+    HANDLE_CASE(MolarHeatCapacity, unit);
+    HANDLE_CASE(Radiance, unit);
+    HANDLE_CASE(Momentum, unit);
+    HANDLE_CASE(MassDensity, unit);
+  }
+  API_ASSERT(false);
+  return "";
+}
+
+const char *BasicUnit::get_symbol(const BasicUnit &a) {
+  switch (a.m_type) {
+    HANDLE_CASE(Mass, symbol);
+    HANDLE_CASE(Unitless, symbol);
+    HANDLE_CASE(Time, symbol);
+    HANDLE_CASE(ElectricCurrent, symbol);
+    HANDLE_CASE(ThermodynamicTemperature, symbol);
+    HANDLE_CASE(AmountOfSubstance, symbol);
+    HANDLE_CASE(LuminousIntensity, symbol);
+    HANDLE_CASE(PlaneAngle, symbol);
+    HANDLE_CASE(SolidAngle, symbol);
+    HANDLE_CASE(Length, symbol);
+    HANDLE_CASE(OrthogonalLength, symbol);
+    HANDLE_CASE(Pi, symbol);
+    HANDLE_CASE(TwoPi, symbol);
+    HANDLE_CASE(Frequency, symbol);
+    HANDLE_CASE(Area, symbol);
+    HANDLE_CASE(Volume, symbol);
+    HANDLE_CASE(Velocity, symbol);
+    HANDLE_CASE(Acceleration, symbol);
+    HANDLE_CASE(Force, symbol);
+    HANDLE_CASE(Pressure, symbol);
+    HANDLE_CASE(Energy, symbol);
+    HANDLE_CASE(Power, symbol);
+    HANDLE_CASE(ElectricCharge, symbol);
+    HANDLE_CASE(ElectricPotential, symbol);
+    HANDLE_CASE(Capacitance, symbol);
+    HANDLE_CASE(ElectricResistance, symbol);
+    HANDLE_CASE(ElectricConductance, symbol);
+    HANDLE_CASE(MagneticFlux, symbol);
+    HANDLE_CASE(MagneticFluxDensity, symbol);
+    HANDLE_CASE(Inductance, symbol);
+    HANDLE_CASE(Temperature, symbol);
+    HANDLE_CASE(LuminousFlux, symbol);
+    HANDLE_CASE(Illuminance, symbol);
+    HANDLE_CASE(DynamicViscosity, symbol);
+    HANDLE_CASE(MomentOfForce, symbol);
+    HANDLE_CASE(AngularVelocity, symbol);
+    HANDLE_CASE(AngularAcceleration, symbol);
+    HANDLE_CASE(SurfaceTension, symbol);
+    HANDLE_CASE(HeatFluxDensity, symbol);
+    HANDLE_CASE(HeatCapacity, symbol);
+    HANDLE_CASE(SpecificHeatCapacity, symbol);
+    HANDLE_CASE(SpecificEnergy, symbol);
+    HANDLE_CASE(ThermalConductivity, symbol);
+    HANDLE_CASE(EnergyDensity, symbol);
+    HANDLE_CASE(ElectricFieldStrength, symbol);
+    HANDLE_CASE(ElectricChargeDensity, symbol);
+    HANDLE_CASE(ElectricFluxDensity, symbol);
+    HANDLE_CASE(Permittivity, symbol);
+    HANDLE_CASE(Permeability, symbol);
+    HANDLE_CASE(MolarEnergy, symbol);
+    HANDLE_CASE(MolarHeatCapacity, symbol);
+    HANDLE_CASE(Radiance, symbol);
+    HANDLE_CASE(Momentum, symbol);
+    HANDLE_CASE(MassDensity, symbol);
+  }
+  API_ASSERT(false);
+  return "";
 }
 
 } // namespace units

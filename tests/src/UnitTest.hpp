@@ -13,13 +13,10 @@ public:
   UnitTest(var::StringView name) : test::Test(name) {}
 
   bool execute_class_api_case() {
-
-
     TEST_ASSERT_RESULT(test_macros());
     TEST_ASSERT_RESULT(test_units());
     TEST_ASSERT_RESULT(test_usage());
     TEST_ASSERT_RESULT(test_code_generation());
-
     return true;
   }
 
@@ -36,7 +33,7 @@ public:
 
     // convert ADC to a real value
     const auto adc_input = 50_number; //unitless value
-    const auto adc_max = Unitless(1024);
+    const auto adc_max = Unitless(1024); //or use 1024_number
     const auto voltage_in = 3300_mV * (adc_input / adc_max);
     printer().object("adcInputVoltage", voltage_in);
 

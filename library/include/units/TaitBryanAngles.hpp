@@ -12,6 +12,7 @@ namespace units {
 
 //Tait-Bryan Angles
 template <class Derived, class Type> class ThreeDimensionalTaitBryanAngle {
+public:
   Type phi; //roll
   Type theta; //pitch
   Type psi; //yaw
@@ -61,5 +62,12 @@ struct AngularAcceleration3d
 
 
 } // namespace units
+
+namespace printer {
+class Printer;
+Printer &operator<<(Printer &printer, const units::AngularPosition3d &a);
+Printer &operator<<(Printer &printer, const units::AngularVelocity3d &a);
+Printer &operator<<(Printer &printer, const units::AngularAcceleration3d &a);
+} // namespace printer
 
 #endif // UNITSAPI_UNITS_CARTESIAN_COORDINATES_HPP
