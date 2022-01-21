@@ -14,6 +14,7 @@ namespace units {
 using NativeType = UNITS_NATIVE_TYPE;
 using NativeIntegerType = s32;
 
+
 class BasicUnit {
 public:
   static constexpr NativeType unit_type_multiplier = UNITS_NATIVE_SUFFIX(1.0);
@@ -74,13 +75,10 @@ public:
   static const char *get_unit(const BasicUnit &a);
   static const char *get_symbol(const BasicUnit &a);
 
-  template<NativeIntegerType Precision> bool operator == (const BasicUnit & a){
-    return difference(value(), a.value(), Precision) == 0;
-  }
 
 protected:
   //Normally enum class values would be snake-case
-  //but to have compatiblity with the classes
+  //but to have compatibility with the classes
   //and aid the use of macros, these names
   //match the class names
   enum class Type : u32 {
@@ -147,8 +145,8 @@ protected:
 
   NativeType m_native_value{};
   const Type m_type = Type::Unitless;
+  static bool is_equal(NativeType a, NativeType b);
 
-  static int difference(NativeType a, NativeType b, int precision);
 };
 
 class Unitless : public BasicUnit {
@@ -235,6 +233,31 @@ public:
   Unitless operator/(Derived a) const {
     return Unitless(m_native_value / a.m_native_value);
   }
+
+  bool operator == (const Derived & a) const {
+    return is_equal(value(), a.value());
+  }
+
+  bool operator != (const Derived & a) const {
+    return !is_equal(value(), a.value());
+  }
+
+  bool operator < (const Derived & a) const {
+    return value() < a.value();
+  }
+
+  bool operator > (const Derived & a) const {
+    return value() > a.value();
+  }
+
+  bool operator <= (const Derived & a) const {
+    return value() < a.value() || is_equal(value(), a.value());
+  }
+
+  bool operator >= (const Derived & a) const {
+    return value() > a.value() || is_equal(value(), a.value());
+  }
+
 
   template <class ConvertType> ConvertType convert(NativeType ratio) const {
     return ConvertType(m_native_value * ratio);

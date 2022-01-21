@@ -2,9 +2,26 @@
 // Created by Tyler Gilbert on 1/18/22.
 //
 
+#include <cmath>
+
 #include <printer/Printer.hpp>
 
 #include "units/DerivedUnits.hpp"
+
+#if 0
+#if UNITS_API_IS_DOUBLE
+#define UNITS_NATIVE_SUFFIX(x) (x)
+#define UNITS_NATIVE_TYPE double
+#define UNITS_NATIVE_INTEGER_TYPE s64
+#define UNITS_PRECISION 0.0000000000000001
+#else
+#define UNITS_NATIVE_SUFFIX(x) (x##f)
+#define UNITS_NATIVE_TYPE float
+#define UNITS_NATIVE_INTEGER_TYPE s32
+#define UNITS_PRECISION 0.000001f
+#endif
+#endif
+
 
 namespace printer {
 class Printer;
@@ -17,12 +34,10 @@ Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
 
 namespace units {
 
-int BasicUnit::difference(
+bool BasicUnit::is_equal(
   NativeType a,
-  NativeType b,
-  NativeIntegerType precision) {
-  return UNITS_NATIVE_INTEGER_TYPE(a * precision)
-         - UNITS_NATIVE_INTEGER_TYPE(b * precision);
+  NativeType b) {
+  return UNITS_NATIVE_SUFFIX(fabs)(a - b) < UNITS_PRECISION;
 }
 
 var::NumberString BasicUnit::to_string(const char *fmt) const {

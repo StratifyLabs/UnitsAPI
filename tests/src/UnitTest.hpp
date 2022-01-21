@@ -17,15 +17,25 @@ public:
     TEST_ASSERT_RESULT(test_units());
     TEST_ASSERT_RESULT(test_usage());
     TEST_ASSERT_RESULT(test_code_generation());
+    TEST_ASSERT_RESULT(test_compare());
+    return true;
+  }
+
+  bool test_compare(){
+    auto voltage = 3300_mV;
+    auto current = 1000_mA;
+    auto resistance = voltage / current;
+    auto power_va = voltage * current;
+    auto power_v2pr = voltage * (voltage / resistance);
+    auto power_i2r = current * (current * resistance);
+    TEST_ASSERT(power_va == power_v2pr);
+    TEST_ASSERT(power_va.milli() == power_v2pr.milli());
     return true;
   }
 
   bool test_code_generation(){
-
     printer().key("sizeOfNativeType", var::NumberString(sizeof(NativeType)));
     printer().key("sizeOfFrequency", var::NumberString(sizeof(Frequency)));
-
-
     return true;
   }
 
