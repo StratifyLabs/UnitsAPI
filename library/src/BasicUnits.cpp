@@ -17,6 +17,14 @@ Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
 
 namespace units {
 
+int BasicUnit::difference(
+  NativeType a,
+  NativeType b,
+  NativeIntegerType precision) {
+  return UNITS_NATIVE_INTEGER_TYPE(a * precision)
+         - UNITS_NATIVE_INTEGER_TYPE(b * precision);
+}
+
 var::NumberString BasicUnit::to_string(const char *fmt) const {
   return var::NumberString(value(), fmt).append(get_symbol(*this));
 }

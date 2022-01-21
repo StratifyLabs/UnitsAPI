@@ -12,6 +12,7 @@
 namespace units {
 
 using NativeType = UNITS_NATIVE_TYPE;
+using NativeIntegerType = s32;
 
 class BasicUnit {
 public:
@@ -19,52 +20,52 @@ public:
 
   constexpr NativeType value() const { return m_native_value; }
 
-  NativeType yotta() const {
+  NativeIntegerType yotta() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(10E24);
   }
-  NativeType zetta() const {
+  NativeIntegerType zetta() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(10E21);
   }
-  NativeType exa() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E18); }
-  NativeType peta() const {
+  NativeIntegerType exa() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E18); }
+  NativeIntegerType peta() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(10E15);
   }
-  NativeType tera() const {
+  NativeIntegerType tera() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(10E12);
   }
-  NativeType giga() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E9); }
-  NativeType mega() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E6); }
-  NativeType kilo() const {
+  NativeIntegerType giga() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E9); }
+  NativeIntegerType mega() const { return m_native_value * UNITS_NATIVE_SUFFIX(10E6); }
+  NativeIntegerType kilo() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1000.0);
   }
-  NativeType hecto() const {
+  NativeIntegerType hecto() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(100.0);
   }
-  NativeType deka() const { return m_native_value * UNITS_NATIVE_SUFFIX(10.0); }
-  NativeType deci() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-1); }
-  NativeType centi() const {
+  NativeIntegerType deka() const { return m_native_value * UNITS_NATIVE_SUFFIX(10.0); }
+  NativeIntegerType deci() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-1); }
+  NativeIntegerType centi() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-2);
   }
-  NativeType milli() const {
+  NativeIntegerType milli() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-3);
   }
-  NativeType micro() const {
+  NativeIntegerType micro() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-6);
   }
-  NativeType nano() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-9); }
-  NativeType pico() const {
+  NativeIntegerType nano() const { return m_native_value * UNITS_NATIVE_SUFFIX(1E-9); }
+  NativeIntegerType pico() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-12);
   }
-  NativeType femto() const {
+  NativeIntegerType femto() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-15);
   }
-  NativeType atto() const {
+  NativeIntegerType atto() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-18);
   }
-  NativeType zepto() const {
+  NativeIntegerType zepto() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-21);
   }
-  NativeType yocto() const {
+  NativeIntegerType yocto() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-24);
   }
 
@@ -72,6 +73,10 @@ public:
 
   static const char *get_unit(const BasicUnit &a);
   static const char *get_symbol(const BasicUnit &a);
+
+  template<NativeIntegerType Precision> bool operator == (const BasicUnit & a){
+    return difference(value(), a.value(), Precision) == 0;
+  }
 
 protected:
   //Normally enum class values would be snake-case
@@ -142,6 +147,8 @@ protected:
 
   NativeType m_native_value{};
   const Type m_type = Type::Unitless;
+
+  static int difference(NativeType a, NativeType b, int precision);
 };
 
 class Unitless : public BasicUnit {

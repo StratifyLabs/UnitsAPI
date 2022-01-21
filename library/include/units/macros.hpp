@@ -74,9 +74,11 @@
 #if UNITS_API_IS_DOUBLE
 #define UNITS_NATIVE_SUFFIX(x) (x)
 #define UNITS_NATIVE_TYPE double
+#define UNITS_NATIVE_INTEGER_TYPE s64
 #else
 #define UNITS_NATIVE_SUFFIX(x) (x##f)
 #define UNITS_NATIVE_TYPE float
+#define UNITS_NATIVE_INTEGER_TYPE s32
 #endif
 
 #endif // UNITSAPI_UNITS_MACROS_HPP
