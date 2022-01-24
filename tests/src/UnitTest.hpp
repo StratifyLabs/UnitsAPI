@@ -29,7 +29,13 @@ public:
     auto power_v2pr = voltage * (voltage / resistance);
     auto power_i2r = current * (current * resistance);
     TEST_ASSERT(power_va == power_v2pr);
-    TEST_ASSERT(power_va.milli() == power_v2pr.milli());
+    TEST_ASSERT(power_va == power_i2r);
+    TEST_ASSERT(power_v2pr == power_i2r);
+    TEST_ASSERT(1_V < 2_V);
+    TEST_ASSERT(1_V <= 2_V);
+    TEST_ASSERT(3_V > 2_V);
+    TEST_ASSERT(3_V >= 2_V);
+
     return true;
   }
 
