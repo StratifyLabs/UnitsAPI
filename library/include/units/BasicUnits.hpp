@@ -144,7 +144,7 @@ protected:
     : m_native_value(value), m_type(type) {}
 
   NativeType m_native_value{};
-  const Type m_type = Type::Unitless;
+  Type m_type = Type::Unitless;
   static bool is_equal(NativeType a, NativeType b);
 
 };
