@@ -133,23 +133,39 @@ UNITS_DECLARE_MULTIPLY(Energy, Momentum, Velocity);
 UNITS_DECLARE_DERIVED_UNIT(MassDensity, kilogram per cubic meter, "kg/m^3");
 UNITS_DECLARE_DIVIDE(MassDensity, Mass, Volume);
 
+
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Area, m2)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Volume, m3)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Frequency, Hz)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Power, W)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Energy, J)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricPotential, V)
-UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricCharge, C)
+
 UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricResistance, ohms)
-UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricConductance, S)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(MagneticFlux, Wb)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(MagneticFluxDensity, T)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Capacitance, F)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Inductance, H)
-UNITS_BASIC_UNIT_DEFINE_LITERAL(Force, N)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Pressure, Pa)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Velocity, mps)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(AngularVelocity, radps)
+
+#if defined _S
+#undef _S
+#endif
+
+#if defined _C
+#undef _C
+#endif
+
+#if defined _N
+#undef _N
+#endif
+
+UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricConductance, S)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricCharge, C)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(Force, N)
+
 
 Velocity from_feet_per_second(NativeType input);
 Velocity from_miles_per_hour(NativeType input);

@@ -220,12 +220,12 @@ public:
     return m_native_value / a.value();
   }
 
-  Derived operator*=(Unitless a) const {
+  Derived& operator*=(Unitless a) {
     m_native_value *= a.value();
     return static_cast<Derived &>(*this);
   }
 
-  Derived operator/=(Unitless a) const {
+  Derived& operator/=(Unitless a) {
     m_native_value /= a.value();
     return static_cast<Derived &>(*this);
   }
