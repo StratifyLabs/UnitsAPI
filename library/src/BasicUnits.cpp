@@ -22,7 +22,6 @@
 #endif
 #endif
 
-
 namespace printer {
 class Printer;
 Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
@@ -34,9 +33,7 @@ Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
 
 namespace units {
 
-bool BasicUnit::is_equal(
-  NativeType a,
-  NativeType b) {
+bool BasicUnit::is_equal(NativeType a, NativeType b) {
   return UNITS_NATIVE_SUFFIX(fabs)(a - b) < UNITS_PRECISION;
 }
 
@@ -55,6 +52,29 @@ Length from_inches(NativeType value) {
 }
 
 Length from_mils(NativeType value) { return from_inches(value / 1000); }
+
+NativeType to_mils(Length input) {
+  return input.value() * UNITS_NATIVE_SUFFIX(0.03937008);
+}
+
+NativeType to_inches(Length input) {
+  return input.value() * UNITS_NATIVE_SUFFIX(39.37008);
+}
+
+NativeType to_feet(Length input) {
+  return input.value() * UNITS_NATIVE_SUFFIX(3.28084);
+}
+
+NativeType to_miles(Length input) {
+  return to_feet(input) / UNITS_NATIVE_SUFFIX(5280.0);
+}
+
+PlaneAngle from_degrees(NativeType input) {
+  return PlaneAngle(input / UNITS_NATIVE_SUFFIX(180.0) * Pi().value());
+}
+NativeType to_degrees(PlaneAngle input) {
+  return input.value() / Pi().value() * UNITS_NATIVE_SUFFIX(180.0);
+}
 
 #define HANDLE_CASE(NAME, FUNCTION)                                            \
   case Type::NAME:                                                             \

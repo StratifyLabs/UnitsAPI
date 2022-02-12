@@ -331,6 +331,16 @@ Length from_inches(NativeType input);
 Length from_feet(NativeType input);
 Length from_miles(NativeType input);
 
+NativeType to_mils(Length input);
+NativeType to_inches(Length input);
+NativeType to_feet(Length input);
+NativeType to_miles(Length input);
+
+PlaneAngle from_degrees(NativeType input);
+NativeType to_degrees(PlaneAngle input);
+
+
+
 inline Mass operator"" _mg(unsigned long long int value) {
   return Mass(value * BasicUnit::unit_type_multiplier / 1000000);
 }
