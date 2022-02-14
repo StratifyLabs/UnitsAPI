@@ -202,4 +202,8 @@ const char *BasicUnit::get_symbol(const BasicUnit &a) {
   return "";
 }
 
+NativeType BasicUnit::absolute_value() const {
+  return UNITS_ABS(value());
+}
+
 } // namespace units

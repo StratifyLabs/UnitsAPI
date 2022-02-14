@@ -77,11 +77,21 @@
 #define UNITS_NATIVE_TYPE double
 #define UNITS_NATIVE_INTEGER_TYPE s64
 #define UNITS_PRECISION 0.0000000000000001
+#define UNITS_SQRT(x) sqrt(x)
+#define UNITS_ABS(x) abs(x)
+#define UNITS_COS(x) cos(x)
+#define UNITS_SIN(x) sin(x)
+#define UNITS_TAN(x) tan(x)
 #else
 #define UNITS_NATIVE_SUFFIX(x) (x##f)
 #define UNITS_NATIVE_TYPE float
 #define UNITS_NATIVE_INTEGER_TYPE s32
 #define UNITS_PRECISION 0.000001f
+#define UNITS_SQRT(x) sqrtf((x))
+#define UNITS_ABS(x) fabs((x))
+#define UNITS_COS(x) cosf(x)
+#define UNITS_SIN(x) sinf(x)
+#define UNITS_TAN(x) tanf(x)
 #endif
 
 #endif // UNITSAPI_UNITS_MACROS_HPP

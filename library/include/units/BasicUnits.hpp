@@ -20,6 +20,7 @@ public:
   static constexpr NativeType unit_type_multiplier = UNITS_NATIVE_SUFFIX(1.0);
 
   constexpr NativeType value() const { return m_native_value; }
+  NativeType absolute_value() const;
 
   NativeIntegerType yotta() const {
     return m_native_value * UNITS_NATIVE_SUFFIX(10E24);

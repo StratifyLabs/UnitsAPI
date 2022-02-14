@@ -27,6 +27,12 @@ printer::operator<<(Printer &printer, const units::AngularAcceleration3d &a) {
     .key("psi", a.psi.to_string());
 }
 
+units::AngularPosition3d
+units::AngularVelocity3d::get_change_in_position(units::Time duration) const {
+  return {phi * duration, theta * duration, psi * duration};
+}
 
-
-
+units::AngularVelocity3d units::AngularAcceleration3d::get_change_in_velocity(
+  units::Time duration) const {
+  return {phi * duration, theta * duration, psi * duration};
+}

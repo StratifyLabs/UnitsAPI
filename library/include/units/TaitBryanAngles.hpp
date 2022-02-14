@@ -51,13 +51,18 @@ struct AngularVelocity3d
   : public ThreeDimensionalTaitBryanAngle<AngularVelocity3d, AngularVelocity> {
 
   AngularPosition3d get_change_in_position(Time duration) const;
-
+  AngularPosition3d operator * (Time duration) const {
+    return get_change_in_position(duration);
+  }
 };
 
 struct AngularAcceleration3d
   : public ThreeDimensionalTaitBryanAngle<AngularAcceleration3d, AngularAcceleration> {
 
   AngularVelocity3d get_change_in_velocity(Time duration) const;
+  AngularVelocity3d operator * (Time duration) const {
+    return get_change_in_velocity(duration);
+  }
 };
 
 

@@ -9,6 +9,17 @@
 
 namespace units {
 
+template <class Type> class ThreeDimensionalPolarCoordinate {
+public:
+  Type r;
+  Type phi;
+  Type theta;
+};
+
+using PolarPoint3d = ThreeDimensionalPolarCoordinate<Length>;
+using PolarVelocity3d = ThreeDimensionalPolarCoordinate<Velocity>;
+using PolarAcceleration3d = ThreeDimensionalPolarCoordinate<Acceleration>;
+
 template <class Derived, class Type> class ThreeDimensionalCartesianCoordinate {
 public:
   Type x;
@@ -37,6 +48,12 @@ public:
     return static_cast<Derived &>(*this);
   }
 
+  ThreeDimensionalPolarCoordinate<Type> get_polar_coordinate() const {
+    return {
+      .r = UNITS_SQRT(x * x + y * y + z * z),
+      .phi = UNITS_NATIVE_SUFFIX(0.0),
+      .theta = UNITS_NATIVE_SUFFIX(0.0)};
+  }
 };
 
 struct Point3d : public ThreeDimensionalCartesianCoordinate<Point3d, Length> {
@@ -47,10 +64,18 @@ struct Point3d : public ThreeDimensionalCartesianCoordinate<Point3d, Length> {
 
 using SpatialPosition3d = Point3d;
 
-struct Velocity3d : public ThreeDimensionalCartesianCoordinate<Velocity3d, Velocity> {
+struct Velocity3d
+  : public ThreeDimensionalCartesianCoordinate<Velocity3d, Velocity> {
+
+  Velocity get_speed() const;
+  float get_magnitude() const;
 
   // calculate the distance to another point
   Point3d get_change_in_position(Time duration) const;
+
+  Point3d operator*(Time duration) const {
+    return get_change_in_position(duration);
+  }
 };
 
 struct Acceleration3d
@@ -58,6 +83,8 @@ struct Acceleration3d
 
   // calculate the distance to another point
   Velocity3d get_velocity(Time duration) const;
+
+  Velocity3d operator*(Time duration) const { return get_velocity(duration); }
 };
 
 struct Size3d {
@@ -71,16 +98,36 @@ struct Size3d {
 struct Position6d {
   SpatialPosition3d spatial;
   AngularPosition3d angular;
+
+  Position6d operator+(const Position6d &a) const {
+    return {.spatial = spatial + a.spatial, .angular = angular + a.angular};
+  }
 };
 
 struct Velocity6d {
   Velocity3d spatial;
   AngularVelocity3d angular;
+
+  Velocity6d operator+(const Velocity6d &a) const {
+    return {.spatial = spatial + a.spatial, .angular = angular + a.angular};
+  }
+
+  Position6d operator*(Time duration) const {
+    return {.spatial = spatial * duration, .angular = angular * duration};
+  }
 };
 
 struct Acceleration6d {
   Acceleration3d spatial;
   AngularAcceleration3d angular;
+
+  Acceleration6d operator+(const Acceleration6d &a) const {
+    return {.spatial = spatial + a.spatial, .angular = angular + a.angular};
+  }
+
+  Velocity6d operator*(Time duration) const {
+    return {.spatial = spatial * duration, .angular = angular * duration};
+  }
 };
 
 } // namespace units
