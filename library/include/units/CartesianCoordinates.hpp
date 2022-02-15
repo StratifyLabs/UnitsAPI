@@ -48,6 +48,14 @@ public:
     return static_cast<Derived &>(*this);
   }
 
+  bool operator == (const Derived & a) const {
+    return x == a.x && y == a.y && z == a.z;
+  }
+
+  bool operator != (const Derived & a) const {
+    return !(*this == a);
+  }
+
   ThreeDimensionalPolarCoordinate<Type> get_polar_coordinate() const {
     return {
       .r = UNITS_SQRT(x * x + y * y + z * z),

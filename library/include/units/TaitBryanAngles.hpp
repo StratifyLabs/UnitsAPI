@@ -38,6 +38,14 @@ public:
     psi -= a.psi;
     return static_cast<Derived &>(*this);
   }
+
+  bool operator == (const Derived & a) const {
+    return phi == a.phi && theta == a.theta && psi == a.psi;
+  }
+
+  bool operator != (const Derived & a) const {
+    return !(*this == a);
+  }
 };
 
 
