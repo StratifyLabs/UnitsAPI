@@ -68,8 +68,6 @@ units::Velocity units::Velocity3d::get_speed() const {
     x.value() * x.value() + y.value() * y.value() + z.value() * z.value()));
 }
 
-float units::Velocity3d::get_magnitude() const { return get_speed().value(); }
-
 units::Velocity3d
 units::Acceleration3d::get_velocity(units::Time duration) const {
   return {x * duration, y * duration, z * duration};

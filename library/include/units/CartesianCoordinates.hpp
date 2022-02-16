@@ -48,20 +48,25 @@ public:
     return static_cast<Derived &>(*this);
   }
 
-  bool operator == (const Derived & a) const {
+  bool operator==(const Derived &a) const {
     return x == a.x && y == a.y && z == a.z;
   }
 
-  bool operator != (const Derived & a) const {
-    return !(*this == a);
+  bool operator!=(const Derived &a) const { return !(*this == a); }
+
+  float get_magnitude() const {
+    return UNITS_SQRT(
+      x.value() * x.value() + y.value() * y.value() + z.value() * z.value());
   }
 
   ThreeDimensionalPolarCoordinate<Type> get_polar_coordinate() const {
     return {
-      .r = UNITS_SQRT(x * x + y * y + z * z),
+      .r = get_magnitude(),
       .phi = UNITS_NATIVE_SUFFIX(0.0),
       .theta = UNITS_NATIVE_SUFFIX(0.0)};
   }
+
+
 };
 
 struct Point3d : public ThreeDimensionalCartesianCoordinate<Point3d, Length> {
@@ -76,7 +81,6 @@ struct Velocity3d
   : public ThreeDimensionalCartesianCoordinate<Velocity3d, Velocity> {
 
   Velocity get_speed() const;
-  float get_magnitude() const;
 
   // calculate the distance to another point
   Point3d get_change_in_position(Time duration) const;
