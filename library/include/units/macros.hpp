@@ -7,6 +7,10 @@
 
 #include <sdk/types.h>
 
+#if defined _MT
+#undef _MT
+#endif
+
 #define UNITS_BASIC_CONSTRUCT(NAME)                                            \
   constexpr NAME(NativeType value)                                             \
       : BasicUnitAccess<NAME>(value, Type::NAME) {}                            \
