@@ -12,7 +12,7 @@
 #endif
 
 #define UNITS_BASIC_CONSTRUCT(NAME)                                            \
-  constexpr NAME(NativeType value)                                             \
+  constexpr explicit NAME(NativeType value)                                    \
       : BasicUnitAccess<NAME>(value, Type::NAME) {}                            \
   constexpr NAME() = default
 
@@ -25,6 +25,12 @@
   };                                                                           \
   inline NAME operator*(Unitless lhs, NAME rhs) {                              \
     return NAME(lhs.value() * rhs.value());                                    \
+  }                                                                            \
+  inline NAME operator*(NAME lhs, Unitless rhs) {                              \
+    return NAME(lhs.value() * rhs.value());                                    \
+  }                                                                            \
+  inline NAME operator/(NAME lhs, Unitless rhs) {                              \
+    return NAME(lhs.value() / rhs.value());                                    \
   }
 
 #define UNITS_DECLARE_DERIVED_UNIT(NAME, UNIT, SYMBOL)                         \
@@ -74,7 +80,6 @@
   inline NAME operator"" _G##SYMBOL(unsigned long long int value) {            \
     return NAME(value * BasicUnit::unit_type_multiplier * 1'000'000'000);      \
   }
-
 
 #if UNITS_API_IS_DOUBLE
 #define UNITS_NATIVE_SUFFIX(x) (x)
