@@ -140,7 +140,7 @@ protected:
   };
 
   constexpr BasicUnit() = default;
-  constexpr BasicUnit(NativeType value) : m_native_value(value) {}
+  constexpr explicit BasicUnit(NativeType value) : m_native_value(value) {}
   constexpr BasicUnit(NativeType value, Type type)
     : m_native_value(value), m_type(type) {}
 
