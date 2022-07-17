@@ -1,3 +1,3 @@
-# Pre-release
+# Version 0.0.0
 
-This library is in a pre-release state.
+Initial release. Semantic API not fixed.
