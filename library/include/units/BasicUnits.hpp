@@ -71,7 +71,7 @@ public:
     return m_native_value * UNITS_NATIVE_SUFFIX(1E-24);
   }
 
-  var::NumberString to_string(const char *fmt = "%0.3f") const;
+  var::NumberString to_string(const char *fmt = "%0.3e") const;
 
   static const char *get_unit(const BasicUnit &a);
   static const char *get_symbol(const BasicUnit &a);
@@ -82,7 +82,7 @@ protected:
   //but to have compatibility with the classes
   //and aid the use of macros, these names
   //match the class names
-  enum class Type : u32 {
+  enum class Type : unsigned {
     Unitless,
     Mass,
     Time,
@@ -136,7 +136,11 @@ protected:
     MolarHeatCapacity,
     Radiance,
     Momentum,
-    MassDensity
+    MassDensity,
+    MassThermodynamicTemperature,
+    LengthThermodynamicTemperature,
+    AmountOfSubstanceThermodynamicTemperature,
+    AreaSolidAngle
   };
 
   constexpr BasicUnit() = default;
@@ -260,8 +264,8 @@ public:
   }
 
 
-  template <class ConvertType> ConvertType convert(NativeType ratio) const {
-    return ConvertType(m_native_value * ratio);
+  template <class ConvertType> ConvertType convert(Derived numerator, ConvertType denominator) const {
+    return ConvertType(m_native_value * (numerator.value() / denominator.value()));
   }
 
 protected:
@@ -339,8 +343,6 @@ NativeType to_miles(Length input);
 
 PlaneAngle from_degrees(NativeType input);
 NativeType to_degrees(PlaneAngle input);
-
-
 
 inline Mass operator"" _mg(unsigned long long int value) {
   return Mass(value * BasicUnit::unit_type_multiplier / 1000000);

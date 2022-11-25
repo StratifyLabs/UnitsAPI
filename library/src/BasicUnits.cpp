@@ -136,6 +136,10 @@ const char *BasicUnit::get_unit(const BasicUnit &a) {
     HANDLE_CASE(Radiance, unit);
     HANDLE_CASE(Momentum, unit);
     HANDLE_CASE(MassDensity, unit);
+    HANDLE_CASE(MassThermodynamicTemperature, unit);
+    HANDLE_CASE(LengthThermodynamicTemperature, unit);
+    HANDLE_CASE(AmountOfSubstanceThermodynamicTemperature, unit);
+    HANDLE_CASE(AreaSolidAngle, unit);
   }
   API_ASSERT(false);
   return "";
@@ -197,6 +201,10 @@ const char *BasicUnit::get_symbol(const BasicUnit &a) {
     HANDLE_CASE(Radiance, symbol);
     HANDLE_CASE(Momentum, symbol);
     HANDLE_CASE(MassDensity, symbol);
+    HANDLE_CASE(MassThermodynamicTemperature, symbol);
+    HANDLE_CASE(LengthThermodynamicTemperature, symbol);
+    HANDLE_CASE(AmountOfSubstanceThermodynamicTemperature, symbol);
+    HANDLE_CASE(AreaSolidAngle, symbol);
   }
   API_ASSERT(false);
   return "";

@@ -9,13 +9,12 @@
 
 namespace units {
 
-
-//Tait-Bryan Angles
+// Tait-Bryan Angles
 template <class Derived, class Type> class ThreeDimensionalTaitBryanAngle {
 public:
-  Type phi; //roll
-  Type theta; //pitch
-  Type psi; //yaw
+  Type phi;   // roll
+  Type theta; // pitch
+  Type psi;   // yaw
 
   Derived operator+(const Derived &a) const {
     return Derived{phi + a.phi, theta + a.theta, psi + a.psi};
@@ -39,40 +38,33 @@ public:
     return static_cast<Derived &>(*this);
   }
 
-  bool operator == (const Derived & a) const {
+  bool operator==(const Derived &a) const {
     return phi == a.phi && theta == a.theta && psi == a.psi;
   }
 
-  bool operator != (const Derived & a) const {
-    return !(*this == a);
-  }
+  bool operator!=(const Derived &a) const { return !(*this == a); }
 };
-
 
 struct AngularPosition3d
-  : public ThreeDimensionalTaitBryanAngle<AngularPosition3d, PlaneAngle> {
-
-
-};
+  : public ThreeDimensionalTaitBryanAngle<AngularPosition3d, PlaneAngle> {};
 
 struct AngularVelocity3d
   : public ThreeDimensionalTaitBryanAngle<AngularVelocity3d, AngularVelocity> {
 
   AngularPosition3d get_change_in_position(Time duration) const;
-  AngularPosition3d operator * (Time duration) const {
+  AngularPosition3d operator*(Time duration) const {
     return get_change_in_position(duration);
   }
 };
 
-struct AngularAcceleration3d
-  : public ThreeDimensionalTaitBryanAngle<AngularAcceleration3d, AngularAcceleration> {
-
+struct AngularAcceleration3d : public ThreeDimensionalTaitBryanAngle<
+                                 AngularAcceleration3d,
+                                 AngularAcceleration> {
   AngularVelocity3d get_change_in_velocity(Time duration) const;
-  AngularVelocity3d operator * (Time duration) const {
+  AngularVelocity3d operator*(Time duration) const {
     return get_change_in_velocity(duration);
   }
 };
-
 
 } // namespace units
 

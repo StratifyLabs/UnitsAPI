@@ -35,7 +35,17 @@ public:
     TEST_ASSERT(1_V <= 2_V);
     TEST_ASSERT(3_V > 2_V);
     TEST_ASSERT(3_V >= 2_V);
-
+    TEST_ASSERT(3_mV < 2_V);
+    TEST_ASSERT(3000_mV == 3_V);
+    TEST_ASSERT(3000000_uV == 3_V);
+    TEST_ASSERT(3000000_mV == 3_kV);
+    TEST_ASSERT(3000000000_nV == 3_V);
+    TEST_ASSERT(3000_V == 3_kV);
+    TEST_ASSERT(3000000_V == 3_MV);
+    TEST_ASSERT(3000000000_V == 3_GV);
+    TEST_ASSERT(1_V + 1_V == 2_V);
+    TEST_ASSERT(3_V - 1_V == 2_V);
+    TEST_ASSERT(3_W - 1_V * 1_A == 2_W);
     return true;
   }
 
@@ -59,21 +69,28 @@ public:
         * (20_kohms / (100_kohms + 20_kohms));
     printer().object("adcOutputVoltage", voltage_out);
 
-    // calculate a resistance from a voltage
-    auto current = (3300_mV - 1200_mV)
-                   / 10_kohms;
+    const auto temperate = voltage_out.convert(1_V, 1_degC);
 
-    auto resistance = 1200_mV / current;
+    // calculate a resistance from a voltage
+    const auto current = (3300_mV - 1200_mV)
+                   / 10_kohms;
+    printer().object("current", current);
+    printer().key("current_s", current.to_string());
+
+
+    const auto resistance = 1200_mV / current;
     printer().object("resistance", resistance);
 
-    auto speed = from_feet(12) / 1_s;
+    const auto speed = from_feet(12) / 1_s;
     printer().object("speed", speed);
 
-    auto angular_velocity = 3140_mrad / 1_s;
+    const auto angular_velocity = 3140_mrad / 1_s;
     printer().object("angular_velocity", angular_velocity);
+    printer().key("angular_velocity_s", angular_velocity.to_string());
 
     const auto c = speed_of_light();
     printer().object("c", c);
+    printer().key("c_s", c.to_string());
 
     //dead reckoning calculations
     const auto step = 0.001;
@@ -118,13 +135,10 @@ public:
     // this just needs to build -- execution will work
     add<OrthogonalLength>("addOrthogonalLength");
     subtract<OrthogonalLength>("subtractOrthogonalLength");
-
     add<Length>("addLength");
     subtract<Length>("subtractLength");
-
     add<Volume>("addVolume");
     subtract<Volume>("subtractVolume");
-
     multiply<Volume, Area, Length>("volume");
     multiply<Area, Length, Length>("area");
     divide<Frequency, Unitless, Time>("frequency");
@@ -158,17 +172,17 @@ public:
       auto frequency = Unitless(1.0f) / Time(2.0f);
       printer().object("frequency", frequency);
       printer().key("frequencyString", frequency.to_string());
-      TEST_ASSERT(frequency.to_string() == "0.500Hz");
+      TEST_ASSERT(frequency.to_string("%0.3f") == "0.500Hz");
 
       auto time = Unitless(1.0f) / frequency;
       printer().object("time", time);
       printer().key("timeString", time.to_string());
-      TEST_ASSERT(time.to_string() == "2.000s");
+      TEST_ASSERT(time.to_string("%0.3f") == "2.000s");
 
       auto revolutions = frequency * time;
       printer().object("revolutions", revolutions);
       printer().key("revolutionsString", revolutions.to_string());
-      TEST_ASSERT(revolutions.to_string() == "1.000");
+      TEST_ASSERT(revolutions.to_string("%0.3f") == "1.000");
     }
 
     {
@@ -177,17 +191,17 @@ public:
       auto volume = Area(1.0f) * Length(2.0f);
       printer().object("volume", volume);
       printer().key("volumeString", volume.to_string());
-      TEST_ASSERT(volume.to_string() == "2.000m^3");
+      TEST_ASSERT(volume.to_string("%0.3f") == "2.000m^3");
 
       auto length = volume / Area(1.0f);
       printer().object("length", length);
       printer().key("lengthString", length.to_string());
-      TEST_ASSERT(length.to_string() == "2.000m");
+      TEST_ASSERT(length.to_string("%0.3f") == "2.000m");
 
       auto area = volume / Length(2.0f);
       printer().object("area", area);
       printer().key("areaString", area.to_string());
-      TEST_ASSERT(area.to_string() == "1.000m^2");
+      TEST_ASSERT(area.to_string("%0.3f") == "1.000m^2");
     }
 
     {
@@ -196,12 +210,12 @@ public:
       auto area = Length(1.0f) * Length(2.0f);
       printer().object("area", area);
       printer().key("areaString", area.to_string());
-      TEST_ASSERT(area.to_string() == "2.000m^2");
+      TEST_ASSERT(area.to_string("%0.3f") == "2.000m^2");
 
       auto length = area / Length(2.0f);
       printer().object("length", length);
       printer().key("lengthString", length.to_string());
-      TEST_ASSERT(length.to_string() == "1.000m");
+      TEST_ASSERT(length.to_string("%0.3f") == "1.000m");
     }
 
     return true;

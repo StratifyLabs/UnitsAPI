@@ -6,39 +6,47 @@
 
 #define DEFINE_MULTIPLY(RESULT, LHS, RHS)                                      \
   RESULT operator*(const LHS &lhs, const RHS &rhs) {                           \
-    return RESULT(lhs.value() * rhs.value());                    \
+    return RESULT(lhs.value() * rhs.value());                                  \
   }                                                                            \
   RESULT operator*(const RHS &lhs, const LHS &rhs) {                           \
-    return RESULT(lhs.value() * rhs.value());                    \
+    return RESULT(lhs.value() * rhs.value());                                  \
   }                                                                            \
   LHS operator/(const RESULT &lhs, const RHS &rhs) {                           \
-    return LHS(lhs.value() / rhs.value());                       \
+    return LHS(lhs.value() / rhs.value());                                     \
   }                                                                            \
   RHS operator/(const RESULT &lhs, const LHS &rhs) {                           \
-    return RHS(lhs.value() / rhs.value());                       \
+    return RHS(lhs.value() / rhs.value());                                     \
   }
 
 #define DEFINE_MULTIPLY_SAME(RESULT, LHS)                                      \
   RESULT operator*(const LHS &lhs, const LHS &rhs) {                           \
-    return RESULT(lhs.value() * rhs.value());                    \
+    return RESULT(lhs.value() * rhs.value());                                  \
   }                                                                            \
   LHS operator/(const RESULT &lhs, const LHS &rhs) {                           \
-    return LHS(lhs.value() / rhs.value());                       \
+    return LHS(lhs.value() / rhs.value());                                     \
   }
 
 #define DEFINE_DIVIDE(RESULT, LHS, RHS)                                        \
   RESULT operator/(const LHS &lhs, const RHS &rhs) {                           \
-    return RESULT(lhs.value() / rhs.value());                    \
+    return RESULT(lhs.value() / rhs.value());                                  \
   }                                                                            \
   RHS operator/(const LHS &lhs, const RESULT &rhs) {                           \
-    return RHS(lhs.value() / rhs.value());                       \
+    return RHS(lhs.value() / rhs.value());                                     \
   }                                                                            \
   LHS operator*(const RESULT &lhs, const RHS &rhs) {                           \
-    return LHS(lhs.value() * rhs.value());                       \
+    return LHS(lhs.value() * rhs.value());                                     \
   }                                                                            \
   LHS operator*(const RHS &lhs, const RESULT &rhs) {                           \
-    return LHS(lhs.value() * rhs.value());                       \
+    return LHS(lhs.value() * rhs.value());                                     \
   }
+
+namespace {
+constexpr units::NativeType kelvin_celcius_delta = UNITS_NATIVE_SUFFIX(273.15);
+constexpr units::NativeType fahrenheit_to_celcius_ratio
+  = UNITS_NATIVE_SUFFIX(1.8);
+constexpr units::NativeType fahrenheit_to_celcius_offset
+  = UNITS_NATIVE_SUFFIX(32.0);
+} // namespace
 
 namespace units {
 
@@ -76,11 +84,11 @@ Frequency operator/(const AngularFrequency &lhs, const TwoPi &rhs) {
   return Frequency(lhs.value() / rhs.value());
 }
 
-AngularFrequency operator/(const TwoPi &lhs, const Time &rhs){
+AngularFrequency operator/(const TwoPi &lhs, const Time &rhs) {
   return AngularFrequency(lhs.value() / rhs.value());
 }
 
-Time operator/(const TwoPi &lhs, const AngularFrequency &rhs){
+Time operator/(const TwoPi &lhs, const AngularFrequency &rhs) {
   return Time(lhs.value() / rhs.value());
 }
 
@@ -89,11 +97,11 @@ DEFINE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
 DEFINE_MULTIPLY(Momentum, Mass, Velocity);
 DEFINE_DIVIDE(MassDensity, Mass, Volume);
 
-Length operator/(const Velocity &lhs, const Frequency & rhs) {
+Length operator/(const Velocity &lhs, const Frequency &rhs) {
   return Length(lhs.value() * rhs.value());
 }
 
-Frequency operator/(const Velocity & lhs, const Length & rhs) {
+Frequency operator/(const Velocity &lhs, const Length &rhs) {
   return Frequency(lhs.value() * rhs.value());
 }
 
@@ -107,6 +115,26 @@ Velocity from_miles_per_hour(NativeType input) {
 
 Frequency from_rounds_per_minute(NativeType input) {
   return Frequency(input / UNITS_NATIVE_SUFFIX(60.0));
+}
+
+Temperature to_celcius(ThermodynamicTemperature kelvin) {
+  return Temperature(kelvin.value() - kelvin_celcius_delta);
+}
+
+ThermodynamicTemperature from_celcius(Temperature celcius) {
+  return ThermodynamicTemperature(celcius.value() + kelvin_celcius_delta);
+}
+
+NativeType to_fahrenheit(ThermodynamicTemperature kelvin) {
+  const auto degrees_c = to_celcius(kelvin);
+  return degrees_c.value() * fahrenheit_to_celcius_ratio
+         + fahrenheit_to_celcius_offset;
+}
+
+ThermodynamicTemperature from_fahrenheit(NativeType fahrenheit) {
+  const auto degrees_c = Temperature(
+    (fahrenheit - fahrenheit_to_celcius_offset) / fahrenheit_to_celcius_ratio);
+  return from_celcius(degrees_c);
 }
 
 } // namespace units

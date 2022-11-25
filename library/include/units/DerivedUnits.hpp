@@ -74,6 +74,24 @@ UNITS_DECLARE_DERIVED_UNIT(
   watt per square meter steradian,
   "W/(m^2*sr)");
 
+//these are intermediate units needed for calculations
+UNITS_DECLARE_DERIVED_UNIT(
+  MassThermodynamicTemperature,
+  mass kelvin,
+  "kg*K");
+UNITS_DECLARE_DERIVED_UNIT(
+  LengthThermodynamicTemperature,
+  length kelvin,
+  "m*K");
+UNITS_DECLARE_DERIVED_UNIT(
+  AmountOfSubstanceThermodynamicTemperature,
+  amount of substance kelvin,
+  "mol*K");
+UNITS_DECLARE_DERIVED_UNIT(
+  AreaSolidAngle,
+  area solid angle,
+  "m^2*sr");
+
 // declare operations
 UNITS_DECLARE_MULTIPLY(Volume, Area, Length);
 UNITS_DECLARE_MULTIPLY_SAME(Area, Length);
@@ -103,17 +121,15 @@ AngularFrequency operator*(const Frequency &lhs, const TwoPi &rhs);
 Frequency operator/(const AngularFrequency &lhs, const TwoPi &rhs);
 AngularFrequency operator/(const TwoPi &lhs, const Time &rhs);
 Time operator/(const TwoPi &lhs, const AngularFrequency &rhs);
-
-
 UNITS_DECLARE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
 UNITS_DECLARE_DIVIDE(SurfaceTension, Force, Length);
 UNITS_DECLARE_DIVIDE(HeatFluxDensity, Power, Area);
 UNITS_DECLARE_DIVIDE(HeatCapacity, Energy, ThermodynamicTemperature);
-// UNITS_DECLARE_DIVIDE(SpecificHeatCapacity,Energy,Mass *
-// ThermodynamicTemperature);
+UNITS_DECLARE_MULTIPLY(MassThermodynamicTemperature, Mass, ThermodynamicTemperature);
+UNITS_DECLARE_DIVIDE(SpecificHeatCapacity,Energy,MassThermodynamicTemperature);
 UNITS_DECLARE_DIVIDE(SpecificEnergy, Energy, Mass);
-// UNITS_DECLARE_DIVIDE(ThermalConductivity,Power,Length *
-// ThermodynamicTemperature);
+UNITS_DECLARE_MULTIPLY(LengthThermodynamicTemperature, Length, ThermodynamicTemperature);
+UNITS_DECLARE_DIVIDE(ThermalConductivity,Power,LengthThermodynamicTemperature);
 UNITS_DECLARE_DIVIDE(EnergyDensity, Energy, Volume);
 UNITS_DECLARE_DIVIDE(ElectricFieldStrength, ElectricPotential, Length);
 UNITS_DECLARE_DIVIDE(ElectricChargeDensity, ElectricCharge, Volume);
@@ -121,11 +137,10 @@ UNITS_DECLARE_DIVIDE(ElectricFluxDensity, ElectricCharge, Area);
 UNITS_DECLARE_DIVIDE(Permittivity, Capacitance, Length);
 UNITS_DECLARE_DIVIDE(Permeability, Inductance, Length);
 UNITS_DECLARE_DIVIDE(MolarEnergy, Energy, AmountOfSubstance);
-// UNITS_DECLARE_DIVIDE(MolarHeatCapacity,Energy,AmountOfSubstance *
-// ThermodynamicTemperature);
-//
-// UNITS_DECLARE_DIVIDE(Radiance,Power,Area * SolidAngle);
-
+UNITS_DECLARE_MULTIPLY(AmountOfSubstanceThermodynamicTemperature, AmountOfSubstance, ThermodynamicTemperature);
+UNITS_DECLARE_DIVIDE(MolarHeatCapacity,Energy,AmountOfSubstanceThermodynamicTemperature);
+UNITS_DECLARE_MULTIPLY(AreaSolidAngle, Area, SolidAngle);
+UNITS_DECLARE_DIVIDE(Radiance,Power,AreaSolidAngle);
 UNITS_DECLARE_DERIVED_UNIT(Momentum, kilogram meter per second, "kg*m/s");
 UNITS_DECLARE_MULTIPLY(Momentum, Mass, Velocity);
 UNITS_DECLARE_MULTIPLY(Energy, Momentum, Velocity);
@@ -164,13 +179,20 @@ UNITS_BASIC_UNIT_DEFINE_LITERAL(AngularVelocity, radps)
 
 UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricConductance, S)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(ElectricCharge, C)
+UNITS_BASIC_UNIT_DEFINE_LITERAL(Temperature, degC)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Force, N)
 
 
 Velocity from_feet_per_second(NativeType input);
 Velocity from_miles_per_hour(NativeType input);
-
 Frequency from_rounds_per_minute(NativeType input);
+ThermodynamicTemperature from_celcius(Temperature temperature);
+
+Temperature to_celcius(ThermodynamicTemperature kelvin);
+ThermodynamicTemperature from_celcius(Temperature celcius);
+
+NativeType to_fahrenheit(ThermodynamicTemperature kelvin);
+ThermodynamicTemperature from_fahrenheit(NativeType celcius);
 
 } // namespace units
 
