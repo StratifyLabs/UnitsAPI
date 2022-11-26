@@ -104,8 +104,30 @@ Time operator/(const TwoPi &lhs, const AngularFrequency &rhs) {
 DEFINE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
 DEFINE_MULTIPLY(AngularAcceleration, AngularVelocity, Frequency);
 
+DEFINE_DIVIDE(SurfaceTension, Force, Length);
+DEFINE_DIVIDE(HeatFluxDensity, Power, Area);
+DEFINE_DIVIDE(HeatCapacity, Energy, ThermodynamicTemperature);
+DEFINE_MULTIPLY(MassThermodynamicTemperature, Mass, ThermodynamicTemperature);
+DEFINE_DIVIDE(SpecificHeatCapacity,Energy,MassThermodynamicTemperature);
+DEFINE_DIVIDE(SpecificEnergy, Energy, Mass);
+DEFINE_MULTIPLY(LengthThermodynamicTemperature, Length, ThermodynamicTemperature);
+DEFINE_DIVIDE(ThermalConductivity,Power,LengthThermodynamicTemperature);
+DEFINE_DIVIDE(EnergyDensity, Energy, Volume);
+DEFINE_DIVIDE(ElectricFieldStrength, ElectricPotential, Length);
+DEFINE_DIVIDE(ElectricChargeDensity, ElectricCharge, Volume);
+DEFINE_DIVIDE(ElectricFluxDensity, ElectricCharge, Area);
+DEFINE_DIVIDE(Permittivity, Capacitance, Length);
+DEFINE_DIVIDE(Permeability, Inductance, Length);
+DEFINE_DIVIDE(MolarEnergy, Energy, AmountOfSubstance);
+DEFINE_MULTIPLY(AmountOfSubstanceThermodynamicTemperature, AmountOfSubstance, ThermodynamicTemperature);
+DEFINE_DIVIDE(MolarHeatCapacity,Energy,AmountOfSubstanceThermodynamicTemperature);
+DEFINE_MULTIPLY(AreaSolidAngle, Area, SolidAngle);
+DEFINE_DIVIDE(Radiance,Power,AreaSolidAngle);
 DEFINE_MULTIPLY(Momentum, Mass, Velocity);
+DEFINE_MULTIPLY(Energy, Momentum, Velocity);
+
 DEFINE_DIVIDE(MassDensity, Mass, Volume);
+
 
 Velocity from_feet_per_second(NativeType input) {
   return from_feet(input) / 1_s;

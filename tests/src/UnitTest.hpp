@@ -109,73 +109,111 @@ public:
     return true;
   }
 
-  template <class ResultType, class LhsType, class RhsType>
-  void multiply(const char *name) {
-    const auto label_multiply = String{ResultType::symbol()} + "=(" + LhsType::symbol()
-                       + ")*(" + RhsType::symbol() + ")";
+  template <class ResultType, class LhsType, class RhsType> void multiply() {
+    const auto label_multiply = String{ResultType::symbol()} + "=("
+                                + LhsType::symbol() + ")*(" + RhsType::symbol()
+                                + ")";
     printer().object(label_multiply, LhsType(1.0f) * RhsType(1.0f));
-    const auto label_divide_lhs = String{RhsType::symbol()} + "=(" + ResultType::symbol()
-                                + ")/(" + LhsType::symbol() + ")";
+    const auto label_divide_lhs = String{RhsType::symbol()} + "=("
+                                  + ResultType::symbol() + ")/("
+                                  + LhsType::symbol() + ")";
     printer().object(label_divide_lhs, ResultType(1.0f) / LhsType(1.0f));
-    const auto label_divide_rhs = String{LhsType::symbol()} + "=(" + ResultType::symbol()
-                                  + ")/(" + RhsType::symbol() + ")";
+    const auto label_divide_rhs = String{LhsType::symbol()} + "=("
+                                  + ResultType::symbol() + ")/("
+                                  + RhsType::symbol() + ")";
     printer().object(label_divide_rhs, ResultType(1.0f) / RhsType(1.0f));
   };
 
-  template <class ResultType, class LhsType, class RhsType>
-  void divide(const char *name) {
-    ResultType result = LhsType(1.0f) / RhsType(1.0f);
-    printer().object(name, LhsType(1.0f) / RhsType(1.0f));
-    printer().object(name, ResultType(1.0f) * RhsType(1.0f));
-    printer().object(name, LhsType(1.0f) / ResultType(1.0f));
+  template <class ResultType, class LhsType, class RhsType> void divide() {
+    const auto label_divide = String{ResultType::symbol()} + "=("
+                              + LhsType::symbol() + ")/(" + RhsType::symbol()
+                              + ")";
+    printer().object(label_divide, LhsType(1.0f) / RhsType(1.0f));
+    const auto label_multiply = String{LhsType::symbol()} + "=("
+                                + ResultType::symbol() + ")*("
+                                + RhsType::symbol() + ")";
+    printer().object(label_multiply, ResultType(1.0f) * RhsType(1.0f));
+    const auto label_divide_lhs = String{RhsType::symbol()} + "=("
+                                  + LhsType::symbol() + ")/("
+                                  + ResultType::symbol() + ")";
+    printer().object(label_divide_lhs, LhsType(1.0f) / ResultType(1.0f));
   };
 
-  template <class ResultType> void add(const char *name) {
+  template <class ResultType> void add() {
     ResultType result = ResultType(1.0f) + ResultType(1.0f);
     result += ResultType(1.0f);
-    printer().object(name, result);
+    printer().object(ResultType::symbol(), result);
   };
 
-  template <class ResultType> void subtract(const char *name) {
+  template <class ResultType> void subtract() {
     ResultType result = ResultType(1.0f) - ResultType(1.0f);
     result -= ResultType(1.0f);
-    printer().object(name, result);
+    printer().object(ResultType::symbol(), result);
   };
 
   bool test_units() {
     // this just needs to build -- execution will work
-    add<OrthogonalLength>("addOrthogonalLength");
-    subtract<OrthogonalLength>("subtractOrthogonalLength");
-    add<Length>("addLength");
-    subtract<Length>("subtractLength");
-    add<Volume>("addVolume");
-    subtract<Volume>("subtractVolume");
-    multiply<Volume, Area, Length>("volume");
-    multiply<Area, Length, Length>("area");
-    divide<Frequency, Unitless, Time>("frequency");
-    divide<Velocity, Length, Time>("velocity");
-    multiply<Velocity, Length, Frequency>("velocity");
-    multiply<Force, Mass, Acceleration>("force");
-    divide<Pressure, Force, Area>("pressure");
-    multiply<Energy, Force, Length>("energy");
-    divide<Power, Energy, Time>("energy");
-    multiply<Power, Energy, Frequency>("energy");
-    multiply<ElectricCharge, ElectricCurrent, Time>("electricCharge");
-    divide<ElectricPotential, Power, ElectricCurrent>("voltage");
-    divide<ElectricResistance, ElectricPotential, ElectricCurrent>(
-      "electricResistance");
-    divide<ElectricConductance, ElectricCurrent, ElectricPotential>(
-      "electricConductance");
-    divide<MagneticFluxDensity, MagneticFlux, Area>("magneticFluxDensity");
-    divide<Inductance, MagneticFlux, ElectricCurrent>("inductance");
-    multiply<LuminousFlux, LuminousIntensity, SolidAngle>("luminousFlux");
-    divide<Illuminance, LuminousIntensity, Area>("illuminance");
-    multiply<DynamicViscosity, Pressure, Time>("dynamicViscosity");
-    divide<DynamicViscosity, Pressure, Frequency>("dynamicViscosity");
-    multiply<MomentOfForce, Force, OrthogonalLength>("momentOfForce");
-    divide<AngularVelocity, PlaneAngle, Time>("angularVelocity");
-    divide<AngularAcceleration, AngularVelocity, Time>("angularAcceleration");
-
+    add<OrthogonalLength>();
+    subtract<OrthogonalLength>();
+    add<Length>();
+    subtract<Length>();
+    add<Volume>();
+    subtract<Volume>();
+    multiply<Volume, Area, Length>();
+    multiply<Area, Length, Length>();
+    divide<Frequency, Unitless, Time>();
+    divide<Velocity, Length, Time>();
+    multiply<Velocity, Length, Frequency>();
+    multiply<Force, Mass, Acceleration>();
+    divide<Pressure, Force, Area>();
+    multiply<Energy, Force, Length>();
+    divide<Power, Energy, Time>();
+    multiply<Power, Energy, Frequency>();
+    multiply<ElectricCharge, ElectricCurrent, Time>();
+    divide<ElectricCharge, ElectricCurrent, Frequency>();
+    divide<ElectricPotential, Power, ElectricCurrent>();
+    divide<ElectricResistance, ElectricPotential, ElectricCurrent>();
+    divide<ElectricConductance, ElectricCurrent, ElectricPotential>();
+    divide<MagneticFluxDensity, MagneticFlux, Area>();
+    divide<Inductance, MagneticFlux, ElectricCurrent>();
+    multiply<LuminousFlux, LuminousIntensity, SolidAngle>();
+    divide<Illuminance, LuminousIntensity, Area>();
+    multiply<DynamicViscosity, Pressure, Time>();
+    divide<DynamicViscosity, Pressure, Frequency>();
+    multiply<MomentOfForce, Force, OrthogonalLength>();
+    divide<AngularVelocity, PlaneAngle, Time>();
+    divide<AngularAcceleration, AngularVelocity, Time>();
+    multiply<AngularAcceleration, AngularVelocity, Frequency>();
+    divide<SurfaceTension, Force, Length>();
+    divide<HeatFluxDensity, Power, Area>();
+    divide<HeatCapacity, Energy, ThermodynamicTemperature>();
+    multiply<MassThermodynamicTemperature, Mass, ThermodynamicTemperature>();
+    divide<SpecificHeatCapacity, Energy, MassThermodynamicTemperature>();
+    divide<SpecificEnergy, Energy, Mass>();
+    multiply<
+      LengthThermodynamicTemperature,
+      Length,
+      ThermodynamicTemperature>();
+    divide<ThermalConductivity, Power, LengthThermodynamicTemperature>();
+    divide<EnergyDensity, Energy, Volume>();
+    divide<ElectricFieldStrength, ElectricPotential, Length>();
+    divide<ElectricChargeDensity, ElectricCharge, Volume>();
+    divide<ElectricFluxDensity, ElectricCharge, Area>();
+    divide<Permittivity, Capacitance, Length>();
+    divide<Permeability, Inductance, Length>();
+    divide<MolarEnergy, Energy, AmountOfSubstance>();
+    multiply<
+      AmountOfSubstanceThermodynamicTemperature,
+      AmountOfSubstance,
+      ThermodynamicTemperature>();
+    divide<
+      MolarHeatCapacity,
+      Energy,
+      AmountOfSubstanceThermodynamicTemperature>();
+    multiply<AreaSolidAngle, Area, SolidAngle>();
+    divide<Radiance, Power, AreaSolidAngle>();
+    multiply<Momentum, Mass, Velocity>();
+    multiply<Energy, Momentum, Velocity>();
     return true;
   }
 
