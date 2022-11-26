@@ -8,20 +8,6 @@
 
 #include "units/DerivedUnits.hpp"
 
-#if 0
-#if UNITS_API_IS_DOUBLE
-#define UNITS_NATIVE_SUFFIX(x) (x)
-#define UNITS_NATIVE_TYPE double
-#define UNITS_NATIVE_INTEGER_TYPE s64
-#define UNITS_PRECISION 0.0000000000000001
-#else
-#define UNITS_NATIVE_SUFFIX(x) (x##f)
-#define UNITS_NATIVE_TYPE float
-#define UNITS_NATIVE_INTEGER_TYPE s32
-#define UNITS_PRECISION 0.000001f
-#endif
-#endif
-
 namespace printer {
 class Printer;
 Printer &operator<<(Printer &printer, const units::BasicUnit &basic_unit) {
@@ -140,6 +126,8 @@ const char *BasicUnit::get_unit(const BasicUnit &a) {
     HANDLE_CASE(LengthThermodynamicTemperature, unit);
     HANDLE_CASE(AmountOfSubstanceThermodynamicTemperature, unit);
     HANDLE_CASE(AreaSolidAngle, unit);
+    HANDLE_CASE(PerAmountOfSubstance, unit);
+    HANDLE_CASE(EnergyPerFrequency, unit);
   }
   API_ASSERT(false);
   return "";
@@ -205,6 +193,8 @@ const char *BasicUnit::get_symbol(const BasicUnit &a) {
     HANDLE_CASE(LengthThermodynamicTemperature, symbol);
     HANDLE_CASE(AmountOfSubstanceThermodynamicTemperature, symbol);
     HANDLE_CASE(AreaSolidAngle, symbol);
+    HANDLE_CASE(PerAmountOfSubstance, symbol);
+    HANDLE_CASE(EnergyPerFrequency, symbol);
   }
   API_ASSERT(false);
   return "";

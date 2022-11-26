@@ -13,7 +13,7 @@ foreach(target ${targets})
 
   target_compile_definitions(${target}
     PUBLIC
-    -DUNITS_API_IS_DOUBLE=${USE_DOUBLE})
+    UNITS_API_IS_DOUBLE=${USE_DOUBLE})
 endforeach()
 
 

@@ -18,10 +18,17 @@ public:
     TEST_ASSERT_RESULT(test_usage());
     TEST_ASSERT_RESULT(test_code_generation());
     TEST_ASSERT_RESULT(test_compare());
+    TEST_ASSERT_RESULT(test_constants());
+    return true;
+  }
+  bool test_constants() {
+    TEST_ASSERT(Length(299'792'458.0) == constants::c() * 1_s);
+    TEST_ASSERT(1_J == constants::h() / Time(constants::h().value()));
+    TEST_ASSERT(1_J == constants::h() * Frequency(1 / constants::h().value()));
     return true;
   }
 
-  bool test_compare(){
+  bool test_compare() {
     auto voltage = 3300_mV;
     auto current = 1000_mA;
     auto resistance = voltage / current;
@@ -49,7 +56,7 @@ public:
     return true;
   }
 
-  bool test_code_generation(){
+  bool test_code_generation() {
     printer().key("sizeOfNativeType", var::NumberString(sizeof(NativeType)));
     printer().key("sizeOfFrequency", var::NumberString(sizeof(Frequency)));
     return true;
@@ -58,25 +65,21 @@ public:
   bool test_usage() {
 
     // convert ADC to a real value
-    const auto adc_input = 50_number; //unitless value
-    const auto adc_max = Unitless(1024); //or use 1024_number
+    const auto adc_input = 50_number;    // unitless value
+    const auto adc_max = Unitless(1024); // or use 1024_number
     const auto voltage_in = 3300_mV * (adc_input / adc_max);
     printer().object("adcInputVoltage", voltage_in);
 
     // convert voltage to a height using a ratio
-    auto voltage_out
-      = voltage_in
-        * (20_kohms / (100_kohms + 20_kohms));
+    auto voltage_out = voltage_in * (20_kohms / (100_kohms + 20_kohms));
     printer().object("adcOutputVoltage", voltage_out);
 
     const auto temperate = voltage_out.convert(1_V, 1_degC);
 
     // calculate a resistance from a voltage
-    const auto current = (3300_mV - 1200_mV)
-                   / 10_kohms;
+    const auto current = (3300_mV - 1200_mV) / 10_kohms;
     printer().object("current", current);
     printer().key("current_s", current.to_string());
-
 
     const auto resistance = 1200_mV / current;
     printer().object("resistance", resistance);
@@ -92,31 +95,39 @@ public:
     printer().object("c", c);
     printer().key("c_s", c.to_string());
 
-    //dead reckoning calculations
+    // dead reckoning calculations
     const auto step = 0.001;
     auto position = Length(0);
     auto velocity = Velocity(0);
-    for(auto time: api::Index(50)){
+    for (auto time : api::Index(50)) {
       velocity += (gravity() * (1_s * Unitless(step)));
       velocity += (gravity() * (Unitless(step) * 1_s));
       velocity += (gravity() * 50_ms);
       position += velocity * 50_ms;
     }
 
-
     return true;
   }
 
   template <class ResultType, class LhsType, class RhsType>
   void multiply(const char *name) {
-    ResultType result = LhsType(1.0f) * RhsType(1.0f);
-    printer().object(name, result);
+    const auto label_multiply = String{ResultType::symbol()} + "=(" + LhsType::symbol()
+                       + ")*(" + RhsType::symbol() + ")";
+    printer().object(label_multiply, LhsType(1.0f) * RhsType(1.0f));
+    const auto label_divide_lhs = String{RhsType::symbol()} + "=(" + ResultType::symbol()
+                                + ")/(" + LhsType::symbol() + ")";
+    printer().object(label_divide_lhs, ResultType(1.0f) / LhsType(1.0f));
+    const auto label_divide_rhs = String{LhsType::symbol()} + "=(" + ResultType::symbol()
+                                  + ")/(" + RhsType::symbol() + ")";
+    printer().object(label_divide_rhs, ResultType(1.0f) / RhsType(1.0f));
   };
 
   template <class ResultType, class LhsType, class RhsType>
   void divide(const char *name) {
     ResultType result = LhsType(1.0f) / RhsType(1.0f);
-    printer().object(name, result);
+    printer().object(name, LhsType(1.0f) / RhsType(1.0f));
+    printer().object(name, ResultType(1.0f) * RhsType(1.0f));
+    printer().object(name, LhsType(1.0f) / ResultType(1.0f));
   };
 
   template <class ResultType> void add(const char *name) {
@@ -143,10 +154,12 @@ public:
     multiply<Area, Length, Length>("area");
     divide<Frequency, Unitless, Time>("frequency");
     divide<Velocity, Length, Time>("velocity");
+    multiply<Velocity, Length, Frequency>("velocity");
     multiply<Force, Mass, Acceleration>("force");
     divide<Pressure, Force, Area>("pressure");
     multiply<Energy, Force, Length>("energy");
     divide<Power, Energy, Time>("energy");
+    multiply<Power, Energy, Frequency>("energy");
     multiply<ElectricCharge, ElectricCurrent, Time>("electricCharge");
     divide<ElectricPotential, Power, ElectricCurrent>("voltage");
     divide<ElectricResistance, ElectricPotential, ElectricCurrent>(
@@ -158,6 +171,7 @@ public:
     multiply<LuminousFlux, LuminousIntensity, SolidAngle>("luminousFlux");
     divide<Illuminance, LuminousIntensity, Area>("illuminance");
     multiply<DynamicViscosity, Pressure, Time>("dynamicViscosity");
+    divide<DynamicViscosity, Pressure, Frequency>("dynamicViscosity");
     multiply<MomentOfForce, Force, OrthogonalLength>("momentOfForce");
     divide<AngularVelocity, PlaneAngle, Time>("angularVelocity");
     divide<AngularAcceleration, AngularVelocity, Time>("angularAcceleration");

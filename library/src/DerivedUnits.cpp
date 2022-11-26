@@ -54,12 +54,18 @@ DEFINE_MULTIPLY(Volume, Area, Length);
 DEFINE_MULTIPLY_SAME(Area, Length);
 DEFINE_DIVIDE(Frequency, Unitless, Time);
 DEFINE_DIVIDE(Velocity, Length, Time);
+DEFINE_MULTIPLY(Velocity, Length, Frequency);
 DEFINE_DIVIDE(Acceleration, Velocity, Time);
+DEFINE_MULTIPLY(Acceleration, Velocity, Frequency);
 DEFINE_MULTIPLY(Force, Mass, Acceleration);
 DEFINE_DIVIDE(Pressure, Force, Area);
 DEFINE_MULTIPLY(Energy, Force, Length);
+DEFINE_MULTIPLY(EnergyPerFrequency, Energy, Time);
+DEFINE_DIVIDE(EnergyPerFrequency, Energy, Frequency);
 DEFINE_DIVIDE(Power, Energy, Time);
+DEFINE_MULTIPLY(Power, Energy, Frequency);
 DEFINE_MULTIPLY(ElectricCharge, ElectricCurrent, Time);
+DEFINE_DIVIDE(ElectricCharge, ElectricCurrent, Frequency);
 DEFINE_DIVIDE(ElectricPotential, Power, ElectricCurrent);
 DEFINE_DIVIDE(Capacitance, ElectricCharge, ElectricPotential);
 DEFINE_DIVIDE(ElectricResistance, ElectricPotential, ElectricCurrent);
@@ -69,8 +75,11 @@ DEFINE_DIVIDE(Inductance, MagneticFlux, ElectricCurrent);
 DEFINE_MULTIPLY(LuminousFlux, LuminousIntensity, SolidAngle);
 DEFINE_DIVIDE(Illuminance, LuminousIntensity, Area);
 DEFINE_MULTIPLY(DynamicViscosity, Pressure, Time);
+DEFINE_DIVIDE(DynamicViscosity, Pressure, Frequency);
 DEFINE_MULTIPLY(MomentOfForce, Force, OrthogonalLength);
 DEFINE_DIVIDE(AngularVelocity, PlaneAngle, Time);
+DEFINE_MULTIPLY(AngularVelocity, PlaneAngle, Frequency);
+DEFINE_DIVIDE(PerAmountOfSubstance, Unitless, AmountOfSubstance);
 
 AngularFrequency operator*(const TwoPi &lhs, const Frequency &rhs) {
   return AngularFrequency(lhs.value() * rhs.value());
@@ -93,17 +102,10 @@ Time operator/(const TwoPi &lhs, const AngularFrequency &rhs) {
 }
 
 DEFINE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
+DEFINE_MULTIPLY(AngularAcceleration, AngularVelocity, Frequency);
 
 DEFINE_MULTIPLY(Momentum, Mass, Velocity);
 DEFINE_DIVIDE(MassDensity, Mass, Volume);
-
-Length operator/(const Velocity &lhs, const Frequency &rhs) {
-  return Length(lhs.value() * rhs.value());
-}
-
-Frequency operator/(const Velocity &lhs, const Length &rhs) {
-  return Frequency(lhs.value() * rhs.value());
-}
 
 Velocity from_feet_per_second(NativeType input) {
   return from_feet(input) / 1_s;

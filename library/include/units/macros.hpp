@@ -13,7 +13,7 @@
 
 #define UNITS_BASIC_CONSTRUCT(NAME)                                            \
   constexpr explicit NAME(NativeType value)                                    \
-      : BasicUnitAccess<NAME>(value, Type::NAME) {}                            \
+    : BasicUnitAccess<NAME>(value, Type::NAME) {}                              \
   constexpr NAME() = default
 
 #define UNITS_DECLARE_BASIC_UNIT(NAME, UNIT, SYMBOL)                           \
@@ -54,31 +54,37 @@
 
 #define UNITS_BASIC_UNIT_DEFINE_LITERAL(NAME, SYMBOL)                          \
   inline NAME operator"" _p##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier / 1'000'000'000'000);  \
+    return NAME(                                                               \
+      NativeType(value) * BasicUnit::unit_type_multiplier                      \
+      / 1'000'000'000'000);                                                    \
   }                                                                            \
   inline NAME operator"" _n##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier / 1'000'000'000);      \
+    return NAME(                                                               \
+      NativeType(value) * BasicUnit::unit_type_multiplier / 1'000'000'000);    \
   }                                                                            \
   inline NAME operator"" _u##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier / 1'000'000);          \
+    return NAME(                                                               \
+      NativeType(value) * BasicUnit::unit_type_multiplier / 1'000'000);        \
   }                                                                            \
   inline NAME operator"" _m##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier / 1000);               \
+    return NAME(NativeType(value) * BasicUnit::unit_type_multiplier / 1000);   \
   }                                                                            \
   inline NAME operator"" _c##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier / 100);                \
+    return NAME(NativeType(value) * BasicUnit::unit_type_multiplier / 100);    \
   }                                                                            \
   inline NAME operator"" _##SYMBOL(unsigned long long int value) {             \
-    return NAME(value * BasicUnit::unit_type_multiplier);                      \
+    return NAME(NativeType(value) * BasicUnit::unit_type_multiplier);          \
   }                                                                            \
   inline NAME operator"" _k##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier * 1000);               \
+    return NAME(NativeType(value) * BasicUnit::unit_type_multiplier * 1000);   \
   }                                                                            \
   inline NAME operator"" _M##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier * 1'000'000);          \
+    return NAME(                                                               \
+      NativeType(value) * BasicUnit::unit_type_multiplier * 1'000'000);        \
   }                                                                            \
   inline NAME operator"" _G##SYMBOL(unsigned long long int value) {            \
-    return NAME(value * BasicUnit::unit_type_multiplier * 1'000'000'000);      \
+    return NAME(                                                               \
+      NativeType(value) * BasicUnit::unit_type_multiplier * 1'000'000'000);    \
   }
 
 #if UNITS_API_IS_DOUBLE

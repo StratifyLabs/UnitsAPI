@@ -92,19 +92,29 @@ UNITS_DECLARE_DERIVED_UNIT(
   area solid angle,
   "m^2*sr");
 
+UNITS_DECLARE_DERIVED_UNIT(PerAmountOfSubstance, mol^-1, "1/mol");
+UNITS_DECLARE_DERIVED_UNIT(EnergyPerFrequency, J*Hz^-1, "J*s");
+
+
 // declare operations
 UNITS_DECLARE_MULTIPLY(Volume, Area, Length);
 UNITS_DECLARE_MULTIPLY_SAME(Area, Length);
 UNITS_DECLARE_DIVIDE(Frequency, Unitless, Time);
 UNITS_DECLARE_DIVIDE(Velocity, Length, Time);
+UNITS_DECLARE_MULTIPLY(Velocity, Length, Frequency);
 UNITS_DECLARE_DIVIDE(Acceleration, Velocity, Time);
+UNITS_DECLARE_MULTIPLY(Acceleration, Velocity, Frequency);
 Length operator/(const Velocity &lhs, const Frequency &rhs);
 Frequency operator/(const Velocity &lhs, const Length &rhs);
 UNITS_DECLARE_MULTIPLY(Force, Mass, Acceleration);
 UNITS_DECLARE_DIVIDE(Pressure, Force, Area);
 UNITS_DECLARE_MULTIPLY(Energy, Force, Length);
+UNITS_DECLARE_MULTIPLY(EnergyPerFrequency, Energy, Time);
+UNITS_DECLARE_DIVIDE(EnergyPerFrequency, Energy, Frequency);
 UNITS_DECLARE_DIVIDE(Power, Energy, Time);
+UNITS_DECLARE_MULTIPLY(Power, Energy, Frequency);
 UNITS_DECLARE_MULTIPLY(ElectricCharge, ElectricCurrent, Time);
+UNITS_DECLARE_DIVIDE(ElectricCharge, ElectricCurrent, Frequency);
 UNITS_DECLARE_DIVIDE(ElectricPotential, Power, ElectricCurrent);
 UNITS_DECLARE_DIVIDE(Capacitance, ElectricCharge, ElectricPotential);
 UNITS_DECLARE_DIVIDE(ElectricResistance, ElectricPotential, ElectricCurrent);
@@ -114,14 +124,17 @@ UNITS_DECLARE_DIVIDE(Inductance, MagneticFlux, ElectricCurrent);
 UNITS_DECLARE_MULTIPLY(LuminousFlux, LuminousIntensity, SolidAngle);
 UNITS_DECLARE_DIVIDE(Illuminance, LuminousIntensity, Area);
 UNITS_DECLARE_MULTIPLY(DynamicViscosity, Pressure, Time);
+UNITS_DECLARE_DIVIDE(DynamicViscosity, Pressure, Frequency);
 UNITS_DECLARE_MULTIPLY(MomentOfForce, Force, OrthogonalLength);
 UNITS_DECLARE_DIVIDE(AngularVelocity, PlaneAngle, Time);
+UNITS_DECLARE_MULTIPLY(AngularVelocity, PlaneAngle, Frequency);
 AngularFrequency operator*(const TwoPi &lhs, const Frequency &rhs);
 AngularFrequency operator*(const Frequency &lhs, const TwoPi &rhs);
 Frequency operator/(const AngularFrequency &lhs, const TwoPi &rhs);
 AngularFrequency operator/(const TwoPi &lhs, const Time &rhs);
 Time operator/(const TwoPi &lhs, const AngularFrequency &rhs);
 UNITS_DECLARE_DIVIDE(AngularAcceleration, AngularVelocity, Time);
+UNITS_DECLARE_MULTIPLY(AngularAcceleration, AngularVelocity, Frequency);
 UNITS_DECLARE_DIVIDE(SurfaceTension, Force, Length);
 UNITS_DECLARE_DIVIDE(HeatFluxDensity, Power, Area);
 UNITS_DECLARE_DIVIDE(HeatCapacity, Energy, ThermodynamicTemperature);
@@ -147,6 +160,7 @@ UNITS_DECLARE_MULTIPLY(Energy, Momentum, Velocity);
 
 UNITS_DECLARE_DERIVED_UNIT(MassDensity, kilogram per cubic meter, "kg/m^3");
 UNITS_DECLARE_DIVIDE(MassDensity, Mass, Volume);
+UNITS_DECLARE_DIVIDE(PerAmountOfSubstance, Unitless, AmountOfSubstance);
 
 
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Area, m2)
@@ -183,16 +197,16 @@ UNITS_BASIC_UNIT_DEFINE_LITERAL(Temperature, degC)
 UNITS_BASIC_UNIT_DEFINE_LITERAL(Force, N)
 
 
-Velocity from_feet_per_second(NativeType input);
-Velocity from_miles_per_hour(NativeType input);
-Frequency from_rounds_per_minute(NativeType input);
-ThermodynamicTemperature from_celcius(Temperature temperature);
+API_MAYBE_UNUSED Velocity from_feet_per_second(NativeType input);
+API_MAYBE_UNUSED Velocity from_miles_per_hour(NativeType input);
+API_MAYBE_UNUSED Frequency from_rounds_per_minute(NativeType input);
+API_MAYBE_UNUSED ThermodynamicTemperature from_celcius(Temperature temperature);
 
-Temperature to_celcius(ThermodynamicTemperature kelvin);
-ThermodynamicTemperature from_celcius(Temperature celcius);
+API_MAYBE_UNUSED Temperature to_celcius(ThermodynamicTemperature kelvin);
+API_MAYBE_UNUSED ThermodynamicTemperature from_celcius(Temperature celcius);
 
-NativeType to_fahrenheit(ThermodynamicTemperature kelvin);
-ThermodynamicTemperature from_fahrenheit(NativeType celcius);
+API_MAYBE_UNUSED NativeType to_fahrenheit(ThermodynamicTemperature kelvin);
+API_MAYBE_UNUSED ThermodynamicTemperature from_fahrenheit(NativeType celcius);
 
 } // namespace units
 
