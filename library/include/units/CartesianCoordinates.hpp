@@ -54,7 +54,7 @@ public:
 
   bool operator!=(const Derived &a) const { return !(*this == a); }
 
-  float get_magnitude() const {
+  NativeType get_magnitude() const {
     return UNITS_SQRT(
       x.value() * x.value() + y.value() * y.value() + z.value() * z.value());
   }
@@ -65,8 +65,6 @@ public:
       .phi = UNITS_NATIVE_SUFFIX(0.0),
       .theta = UNITS_NATIVE_SUFFIX(0.0)};
   }
-
-
 };
 
 struct Point3d : public ThreeDimensionalCartesianCoordinate<Point3d, Length> {
@@ -93,6 +91,12 @@ struct Velocity3d
 struct Acceleration3d
   : public ThreeDimensionalCartesianCoordinate<Acceleration3d, Acceleration> {
 
+  Acceleration3d() = default;
+  Acceleration3d(Acceleration x, Acceleration y, Acceleration z)
+    : ThreeDimensionalCartesianCoordinate<Acceleration3d, Acceleration>{
+      x,
+      y,
+      z} {}
   // calculate the distance to another point
   Velocity3d get_velocity(Time duration) const;
 
