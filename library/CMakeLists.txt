@@ -1,7 +1,10 @@
 # These are the depedencies
 set(LIBRARIES VarAPI PrinterAPI)
 
-api_add_api_library(UnitsAPI "${LIBRARIES}")
+api2_add_library(
+	NAME UnitsAPI
+	DEPENDENCIES ${LIBRARIES}
+	TARGETS TARGET_LIST)
 
 function(add_type_option TARGET)
 
@@ -17,12 +20,10 @@ function(add_type_option TARGET)
     )
 endfunction()
 
-add_type_option(UnitsAPI_release_${SOS_ARCH})
-add_type_option(UnitsAPI_debug_${SOS_ARCH})
 
-foreach(ARCH ${SOS_ARCH_LIST})
-  add_type_option(UnitsAPI_release_${ARCH})
-  add_type_option(UnitsAPI_debug_${ARCH})
+foreach(TARGET ${TARGET_LIST})
+  add_type_option(${TARGET})
+  add_type_option(${TARGET})
 endforeach()
 
 
