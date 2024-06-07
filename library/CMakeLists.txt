@@ -2,9 +2,9 @@
 api2_add_library(
   NAME UnitsAPI
   DEPENDENCIES VarAPI PrinterAPI
-  TARGETS targets)
+  TARGETS TARGET_LIST)
 
-foreach(target ${targets})
+foreach(target ${TARGET_LIST})
   if(UNITS_API_IS_DOUBLE)
     set(USE_DOUBLE 1)
   else()
